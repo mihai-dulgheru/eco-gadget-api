@@ -4,7 +4,7 @@ import express from 'express';
 import logger from 'morgan';
 import { connect } from './functions';
 import { errorHandler } from './middleware';
-import { tanksRouter } from './routes';
+import { accountsRouter } from './routes';
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/tanks', tanksRouter);
+app.use('/accounts', accountsRouter);
 
 app.use(errorHandler);
 

@@ -1,1 +1,1 @@
-export * as tanksController from './tanks';
+export * as accountsController from './accounts';

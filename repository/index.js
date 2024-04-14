@@ -1,1 +1,1 @@
-export * as tanksRepository from './tanks';
+export * as accountsRepository from './accounts';
