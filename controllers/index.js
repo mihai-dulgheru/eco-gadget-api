@@ -1,1 +1,2 @@
-export * as tanksController from './tanks';
+export * as accountsController from './accounts';
+export * as recyclingLocationsController from './recycling-locations';

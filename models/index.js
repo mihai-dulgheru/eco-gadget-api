@@ -1,1 +1,1 @@
-export { default as Tank } from './tank';
+export { default as User } from './user';
