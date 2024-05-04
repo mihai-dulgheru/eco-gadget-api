@@ -2,7 +2,7 @@ async function getRecyclingLocations(_req, res) {
   return res.json({
     data: [
       {
-        id: 1,
+        _id: 1,
         name: 'Recycling Center 1',
         address: '123 Main St, YourCity',
         image:
@@ -26,7 +26,7 @@ async function getRecyclingLocations(_req, res) {
         longitude: 26.040600654474453,
       },
       {
-        id: 2,
+        _id: 2,
         name: 'EcoFriendly Place',
         address: '456 Elm St, AnotherCity',
         image:
@@ -50,7 +50,7 @@ async function getRecyclingLocations(_req, res) {
         longitude: 26.040600654474453,
       },
       {
-        id: 3,
+        _id: 3,
         name: 'Green Earth Facility',
         address: '789 Maple Ave, NearbyTown',
         image: 'https://example.com/image3.jpg',
