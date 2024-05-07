@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { recyclingLocationsController } from '../controllers';
-import { asyncWrapper } from '../utils';
+import { asyncWrapper } from '../middleware';
 
 const router = Router();
 
