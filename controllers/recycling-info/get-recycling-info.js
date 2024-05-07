@@ -6,6 +6,11 @@ async function getRecyclingInfo(_req, res) {
         createdAt: new Date(),
         createdBy: 'Admin',
         date: '2022-07-01',
+        location: {
+          latitude: 44.43301523279083,
+          longitude: 26.040600654474453,
+          name: 'Street Name, City',
+        },
         picture: {
           alt: 'Recycling Info',
           url: 'https://www.epa.gov/system/files/styles/medium/private/images/2023-10/rrb.jpg?itok=V4cyuIxw',
@@ -36,10 +41,6 @@ async function getRecyclingInfo(_req, res) {
           },
           {
             _id: 4,
-            map: { latitude: 44.43301523279083, longitude: 26.040600654474453 },
-          },
-          {
-            _id: 5,
             links: [
               {
                 _id: 1,
@@ -49,7 +50,7 @@ async function getRecyclingInfo(_req, res) {
             ],
           },
           {
-            _id: 6,
+            _id: 5,
             contact: {
               address: '123 Main St, YourCity',
               email: 'example@email.com',
@@ -57,7 +58,7 @@ async function getRecyclingInfo(_req, res) {
             },
           },
           {
-            _id: 7,
+            _id: 6,
             social: {
               facebook: 'https://www.facebook.com',
               instagram: 'https://www.instagram.com',
@@ -66,7 +67,7 @@ async function getRecyclingInfo(_req, res) {
             },
           },
           {
-            _id: 8,
+            _id: 7,
             faqs: [
               {
                 _id: 1,

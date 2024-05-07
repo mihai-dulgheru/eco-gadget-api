@@ -40,19 +40,15 @@ const sectionSchema = new mongoose.Schema({
   heading: String,
   images: [imageSchema],
   links: [linkSchema],
-  map: {
-    latitude: Number,
-    longitude: Number,
-  },
   social: socialSchema,
   video: videoSchema,
 });
 
 const recyclingInfoSchema = new mongoose.Schema(
   {
-    // TODO: Add location field and remove the map field from sections
     createdBy: String,
     date: { type: Date, default: Date.now },
+    location: { latitude: Number, longitude: Number, name: String },
     picture: imageSchema,
     sections: [sectionSchema],
     subtitle: String,
