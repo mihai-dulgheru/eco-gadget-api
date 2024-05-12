@@ -5,6 +5,7 @@ import logger from 'morgan';
 import { errorHandler } from './middleware';
 import {
   accountsRouter,
+  applianceRoutes,
   recyclingInfoRouter,
   recyclingLocationsRouter,
 } from './routes';
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/accounts', accountsRouter);
+app.use('/appliances', applianceRoutes);
 app.use('/recycling-info', recyclingInfoRouter);
 app.use('/recycling-locations', recyclingLocationsRouter);
 
