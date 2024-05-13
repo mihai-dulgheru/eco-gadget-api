@@ -662,7 +662,8 @@
 								{
 									"key": "profilePicture",
 									"type": "file",
-									"src": "/C:/Users/mihai/Downloads/temp/profilePicture.jpg"
+									"src": [],
+									"disabled": true
 								}
 							]
 						},
@@ -747,6 +748,10 @@
 			"key": "url",
 			"value": "http://localhost:5000",
 			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }

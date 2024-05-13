@@ -17,7 +17,7 @@ const authenticate = (req, res, next) => {
 
     try {
       const user = await User.findById(decoded.localId)
-        .select('-password')
+        .select('email firstName lastName phone role')
         .lean();
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
