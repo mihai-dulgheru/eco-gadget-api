@@ -1,8 +1,10 @@
 import { Router } from 'express';
+import multer from 'multer';
 import { accountsController } from '../controllers';
 import { asyncWrapper, authenticate } from '../middleware';
 
 const router = Router();
+const upload = multer({ dest: 'uploads/' });
 
 router.get(
   '/lookup',
@@ -13,6 +15,10 @@ router.post(
   '/sign-in-with-password',
   asyncWrapper(accountsController.signInWithPassword)
 );
-router.post('/sign-up', asyncWrapper(accountsController.signUp));
+router.post(
+  '/sign-up',
+  upload.single('profilePicture'),
+  asyncWrapper(accountsController.signUp)
+);
 
 export default router;

@@ -1,12 +1,13 @@
 import { User } from '../../models';
 import { generateToken } from '../../utils';
+import aws from '../../utils/aws';
 
 async function signUp(req, res) {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { email, password, firstName, lastName, phone } = req.body;
+  if (!email || !firstName || !lastName || !password) {
     return res.status(400).json({
       name: 'MissingCredentialsError',
-      message: 'Email and password are required',
+      message: 'Please provide all required fields',
     });
   }
 
@@ -19,14 +20,36 @@ async function signUp(req, res) {
   }
 
   try {
-    const user = new User({ email, password });
+    const newUser = {
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+      profilePicture: {},
+    };
+
+    if (req.file) {
+      const { name, data, mimetype, size } = req.file;
+      const uploadResult = await aws.upload(name, data, { public: true });
+      newUser.profilePicture = {
+        name: uploadResult.name,
+        size,
+        type: mimetype,
+        url: aws.getPublicUrl(uploadResult.key),
+      };
+    }
+
+    const user = new User(newUser);
     await user.save();
+
     const idToken = generateToken(user);
 
     return res.json({
       idToken,
       email: user.email,
       localId: user._id,
+      profilePicture: user.profilePicture.url, // Include profile picture URL in the response
     });
   } catch (error) {
     return res.status(500).json({

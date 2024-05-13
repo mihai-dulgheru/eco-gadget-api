@@ -10,27 +10,18 @@
 			"name": "Accounts",
 			"item": [
 				{
-					"name": "Sign Up",
+					"name": "Get Account Info",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"lEN8.zLSuAUrOvZ2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{url}}/accounts/sign-up",
+							"raw": "{{url}}/accounts/lookup",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"accounts",
-								"sign-up"
+								"lookup"
 							]
 						}
 					},
@@ -38,12 +29,25 @@
 				},
 				{
 					"name": "Sign In With Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", jsonData.idToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"rocio65@hotmail.com\",\r\n    \"password\": \"lEN8.zLSuAUrOvZ2\"\r\n}",
+							"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -62,10 +66,660 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", jsonData.idToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"password\": \"Password123!\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/accounts/sign-up",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"accounts",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appliances",
+			"item": [
+				{
+					"name": "Get Appliances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"appliance_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/appliances",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appliances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appliance By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/appliances/{{appliance_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appliances",
+								"{{appliance_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Appliance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"appliance_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Refrigerator\",\r\n    \"description\": \"Energy-efficient fridge\",\r\n    \"productionYear\": 2018,\r\n    \"energyUsage\": 300,\r\n    \"CO2Emissions\": 150,\r\n    \"expectedLifespan\": 10,\r\n    \"disposalOptions\": \"Recyclable\",\r\n    \"efficiencyRating\": \"A++\",\r\n    \"materialComposition\": {\r\n        \"metal\": 60,\r\n        \"plastic\": 30,\r\n        \"other\": 10\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appliances",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appliances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Appliance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Refrigerator\",\r\n    \"description\": \"Energy-efficient fridge\",\r\n    \"productionYear\": 2018,\r\n    \"energyUsage\": 300,\r\n    \"CO2Emissions\": 150,\r\n    \"expectedLifespan\": 5,\r\n    \"disposalOptions\": \"Recyclable\",\r\n    \"efficiencyRating\": \"A++\",\r\n    \"materialComposition\": {\r\n        \"metal\": 60,\r\n        \"plastic\": 30,\r\n        \"other\": 10\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appliances/{{appliance_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appliances",
+								"{{appliance_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Appliance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"appliance_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/appliances/{{appliance_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appliances",
+								"{{appliance_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recycling Infos",
+			"item": [
+				{
+					"name": "Get Recycling Infos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_info_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Info By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-info",
+								"{{recycling_info_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Recycling Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_info_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"{{$randomDateFuture}}\",\r\n    \"location\": {\r\n        \"latitude\": {{$randomLatitude}},\r\n        \"longitude\": {{$randomLongitude}},\r\n        \"name\": \"{{$randomStreetAddress}}\"\r\n    },\r\n    \"picture\": {\r\n        \"alt\": \"{{$randomWords}}\",\r\n        \"url\": \"{{$randomImageUrl}}\"\r\n    },\r\n    \"sections\": [\r\n        {\r\n            \"content\": \"{{$randomPhrase}}\",\r\n            \"heading\": \"{{$randomWords}}\"\r\n        },\r\n        {\r\n            \"images\": [\r\n                {\r\n                    \"alt\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomImageUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"video\": {\r\n                \"title\": \"{{$randomWords}}\",\r\n                \"url\": \"https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4\"\r\n            }\r\n        },\r\n        {\r\n            \"links\": [\r\n                {\r\n                    \"title\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"contact\": {\r\n                \"address\": \"{{$randomStreetAddress}}\",\r\n                \"email\": \"{{$randomExampleEmail}}\",\r\n                \"phone\": \"{{$randomPhoneNumberExt}}\"\r\n            }\r\n        },\r\n        {\r\n            \"social\": {\r\n                \"facebook\": \"https://www.facebook.com\",\r\n                \"instagram\": \"https://www.instagram.com\",\r\n                \"twitter\": \"https://www.twitter.com\",\r\n                \"youtube\": \"https://www.youtube.com\"\r\n            }\r\n        },\r\n        {\r\n            \"faqs\": [\r\n                {\r\n                    \"answer\": \"{{$randomPhrase}}\",\r\n                    \"question\": \"{{$randomWords}}\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"subtitle\": \"{{$randomWords}}\",\r\n    \"tags\": [\r\n        \"recycling\",\r\n        \"environment\",\r\n        \"sustainability\"\r\n    ],\r\n    \"title\": \"{{$randomWords}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recycling-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recycling Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"{{$randomDateFuture}}\",\r\n    \"location\": {\r\n        \"latitude\": {{$randomLatitude}},\r\n        \"longitude\": {{$randomLongitude}},\r\n        \"name\": \"{{$randomStreetAddress}}\"\r\n    },\r\n    \"picture\": {\r\n        \"alt\": \"{{$randomWords}}\",\r\n        \"url\": \"{{$randomImageUrl}}\"\r\n    },\r\n    \"subtitle\": \"{{$randomWords}}\",\r\n    \"tags\": [\r\n        \"recycling\",\r\n        \"environment\",\r\n        \"sustainability\"\r\n    ],\r\n    \"title\": \"{{$randomWords}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-info",
+								"{{recycling_info_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recycling Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"recycling_info_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-info",
+								"{{recycling_info_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recycling Locations",
+			"item": [
+				{
+					"name": "Get Recycling Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_location_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-locations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Location By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-locations/{{recycling_location_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations",
+								"{{recycling_location_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Recycling Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_location_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"image\": \"{{$randomImageUrl}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"description\": \"{{$randomLoremParagraph}}\",\r\n    \"schedule\": {\r\n        \"monday\": \"9:00 AM - 5:00 PM\",\r\n        \"tuesday\": \"9:00 AM - 5:00 PM\",\r\n        \"wednesday\": \"9:00 AM - 5:00 PM\",\r\n        \"thursday\": \"9:00 AM - 5:00 PM\",\r\n        \"friday\": \"9:00 AM - 5:00 PM\",\r\n        \"saturday\": \"10:00 AM - 2:00 PM\",\r\n        \"sunday\": \"Closed\"\r\n    },\r\n    \"company\": \"{{$randomCompanyName}} {{$randomCompanySuffix}}\",\r\n    \"cui\": \"RO12345678\",\r\n    \"regCom\": \"J12/3456/2024\",\r\n    \"latitude\": {{$randomLatitude}},\r\n    \"longitude\": {{$randomLongitude}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recycling-locations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recycling Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"image\": \"{{$randomImageUrl}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"description\": \"{{$randomLoremParagraph}}\",\r\n    \"schedule\": {\r\n        \"monday\": \"9:00 AM - 5:00 PM\",\r\n        \"tuesday\": \"9:00 AM - 5:00 PM\",\r\n        \"wednesday\": \"9:00 AM - 5:00 PM\",\r\n        \"thursday\": \"9:00 AM - 5:00 PM\",\r\n        \"friday\": \"9:00 AM - 5:00 PM\",\r\n        \"saturday\": \"10:00 AM - 2:00 PM\",\r\n        \"sunday\": \"Closed\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recycling-locations/{{recycling_location_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations",
+								"{{recycling_location_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recycling Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"recycling_location_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-locations/{{recycling_location_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations",
+								"{{recycling_location_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "Password123!",
+									"type": "text"
+								},
+								{
+									"key": "firstName",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "{{$randomLastName}}",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "profilePicture",
+									"type": "file",
+									"src": "/C:/Users/mihai/Downloads/temp/profilePicture.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"token\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",

@@ -2,36 +2,76 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-const schema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    validate: {
-      validator: (value) => validator.isEmail(value),
-      message: (props) => `${props.value} is not a valid email!`,
-    },
-  },
-  password: {
-    type: String,
-    required: true,
-    minLength: 8,
-    validate: {
-      validator: function (value) {
-        // Ensure password has numbers, letters, and special characters
-        return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}$/.test(value);
-      },
-      message: () =>
-        'Password must contain at least one number, one lowercase and one uppercase letter, and one special character.',
-    },
-  },
+const energyUsageSchema = new mongoose.Schema({
+  applianceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Appliance' },
+  timestamp: { type: Date, default: Date.now },
+  usage: { type: Number },
 });
 
-// Hashing the password before saving it to the database
+const schema = new mongoose.Schema(
+  {
+    aiSettings: {
+      notificationsEnabled: { type: Boolean, default: true },
+      optimizationPreferences: {
+        type: String,
+        enum: ['energy-saving', 'performance', 'balanced'],
+        default: 'balanced',
+      },
+    },
+    appliances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appliance' }],
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate: {
+        validator: (value) => validator.isEmail(value),
+        message: (props) => `${props.value} is not a valid email!`,
+      },
+    },
+    energyUsage: [energyUsageSchema],
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    lifecycleAnalysis: {
+      totalCO2Emissions: { type: Number, default: 0 },
+      suggestions: [{ type: String }],
+    },
+    password: {
+      type: String,
+      required: true,
+      minLength: 8,
+      validate: {
+        validator: function (value) {
+          return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}$/.test(value);
+        },
+        message: () =>
+          'Password must contain at least one number, one lowercase and one uppercase letter, and one special character.',
+      },
+    },
+    phone: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) => validator.isMobilePhone(value),
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
+    profilePicture: {
+      name: { type: String },
+      size: { type: Number },
+      type: { type: String },
+      url: { type: String },
+    },
+    recyclingLocations: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'RecyclingLocation' },
+    ],
+    role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  },
+  { timestamps: true }
+);
+
 schema.pre('save', async function (next) {
-  // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) {
     return next();
   }

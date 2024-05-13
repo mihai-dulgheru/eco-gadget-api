@@ -1,39 +1,39 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const faqSchema = new mongoose.Schema({
+const faqSchema = new Schema({
   question: { type: String, required: true },
   answer: { type: String, required: true },
 });
 
-const imageSchema = new mongoose.Schema({
+const imageSchema = new Schema({
   alt: String,
   url: { type: String, required: true },
 });
 
-const linkSchema = new mongoose.Schema({
+const linkSchema = new Schema({
   title: String,
   url: { type: String, required: true },
 });
 
-const socialSchema = new mongoose.Schema({
+const socialSchema = new Schema({
   facebook: String,
   instagram: String,
   twitter: String,
   youtube: String,
 });
 
-const videoSchema = new mongoose.Schema({
+const videoSchema = new Schema({
   title: String,
   url: { type: String, required: true },
 });
 
-const contactSchema = new mongoose.Schema({
+const contactSchema = new Schema({
   address: String,
   email: String,
   phone: String,
 });
 
-const sectionSchema = new mongoose.Schema({
+const sectionSchema = new Schema({
   contact: contactSchema,
   content: String,
   faqs: [faqSchema],
@@ -44,9 +44,9 @@ const sectionSchema = new mongoose.Schema({
   video: videoSchema,
 });
 
-const recyclingInfoSchema = new mongoose.Schema(
+const recyclingInfoSchema = new Schema(
   {
-    createdBy: String,
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     date: { type: Date, default: Date.now },
     location: { latitude: Number, longitude: Number, name: String },
     picture: imageSchema,
@@ -54,13 +54,13 @@ const recyclingInfoSchema = new mongoose.Schema(
     subtitle: String,
     tags: [{ type: String, index: true }],
     title: { type: String, required: true, index: true },
-    updatedBy: String,
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: true,
   }
 );
 
-const RecyclingInfo = mongoose.model('RecyclingInfo', recyclingInfoSchema);
+const RecyclingInfo = model('RecyclingInfo', recyclingInfoSchema);
 
-module.exports = RecyclingInfo;
+export default RecyclingInfo;

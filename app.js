@@ -8,6 +8,7 @@ import {
   applianceRoutes,
   recyclingInfoRouter,
   recyclingLocationsRouter,
+  usersRouter,
 } from './routes';
 import { connect } from './utils';
 
@@ -24,6 +25,7 @@ app.use('/accounts', accountsRouter);
 app.use('/appliances', applianceRoutes);
 app.use('/recycling-info', recyclingInfoRouter);
 app.use('/recycling-locations', recyclingLocationsRouter);
+app.use('/users', usersRouter);
 
 app.use(errorHandler);
 
