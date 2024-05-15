@@ -6,6 +6,20 @@ const materialCompositionSchema = new Schema({
   other: { type: Number, required: true },
 });
 
+const DISPOSAL_OPTIONS = ['Recyclable', 'Non-recyclable', 'Hazardous'];
+const EFFICIENCY_RATINGS = [
+  'A+++',
+  'A++',
+  'A+',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+];
+
 export const applianceSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -14,8 +28,12 @@ export const applianceSchema = new Schema(
     energyUsage: { type: Number, required: true }, // kWh per year
     CO2Emissions: { type: Number, required: true }, // kg of CO2 per year
     expectedLifespan: { type: Number, required: true }, // years
-    disposalOptions: { type: String, required: true },
-    efficiencyRating: { type: String, required: true },
+    disposalOptions: { type: String, required: true, enum: DISPOSAL_OPTIONS },
+    efficiencyRating: {
+      type: String,
+      required: true,
+      enum: EFFICIENCY_RATINGS,
+    },
     materialComposition: materialCompositionSchema,
   },
   {
