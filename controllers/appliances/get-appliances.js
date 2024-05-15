@@ -1,9 +1,12 @@
-import { Appliance } from '../../models';
+import { User } from '../../models';
 
 // Get all appliances
-async function getAppliances(_req, res) {
+async function getAppliances(req, res) {
   try {
-    const appliances = await Appliance.find({}).lean();
+    const userId = req.user._id;
+    const user = await User.findById(userId).populate('appliances').lean();
+    const appliances = user.appliances;
+
     res.status(200).json(appliances);
   } catch (error) {
     res
