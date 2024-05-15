@@ -18,7 +18,7 @@ const s3Client = new S3Client({
     accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
     secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
   },
-  endpoint: 'https://eco-gadget.fra1.digitaloceanspaces.com',
+  endpoint: 'https://eco-gadget.fra1.digitaloceanspaces.com', // 'https://eco-gadget.s3.eu-north-1.amazonaws.com'
   forcePathStyle: false,
   region,
 });
