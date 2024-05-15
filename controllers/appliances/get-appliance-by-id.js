@@ -4,7 +4,7 @@ import { Appliance } from '../../models';
 async function getApplianceById(req, res) {
   try {
     const { id } = req.params;
-    const appliance = await Appliance.findById(id);
+    const appliance = await Appliance.findById(id).lean();
     if (!appliance) {
       return res.status(404).json({ message: 'Appliance not found' });
     }

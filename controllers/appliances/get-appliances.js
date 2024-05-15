@@ -3,7 +3,7 @@ import { Appliance } from '../../models';
 // Get all appliances
 async function getAppliances(_req, res) {
   try {
-    const appliances = await Appliance.find({});
+    const appliances = await Appliance.find({}).lean();
     res.status(200).json(appliances);
   } catch (error) {
     res

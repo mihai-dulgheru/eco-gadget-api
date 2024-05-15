@@ -38,7 +38,7 @@ async function seedDatabase() {
     console.log('User data successfully seeded!');
 
     console.log('Setting createdBy and updatedBy fields for recycling info...');
-    const admin = await User.findOne({ role: 'admin' });
+    const admin = await User.findOne({ role: 'admin' }).lean();
     await RecyclingInfo.updateMany(
       {},
       { $set: { createdBy: admin._id, updatedBy: admin._id } }

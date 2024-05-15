@@ -7,7 +7,7 @@ async function deleteUser(req, res) {
 
   // Optionally, delete the profile picture from S3 if exists
   try {
-    const user = await User.findById(_id);
+    const user = await User.findById(_id).lean();
     if (user && user.profilePicture && user.profilePicture.url) {
       await aws.remove(aws.getKey(user.profilePicture.url));
     }

@@ -11,7 +11,7 @@ async function signInWithPassword(req, res) {
     });
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).lean();
   if (!user) {
     return res.status(404).json({
       name: 'UserDoesNotExistError',

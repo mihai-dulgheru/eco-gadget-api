@@ -2,8 +2,10 @@ import bcrypt from 'bcrypt';
 import { Appliance, RecyclingLocation } from '../models';
 
 export default async function () {
-  const appliances = await Appliance.find({}).select('_id');
-  const recyclingLocations = await RecyclingLocation.find({}).select('_id');
+  const appliances = await Appliance.find({}).select('_id').lean();
+  const recyclingLocations = await RecyclingLocation.find({})
+    .select('_id')
+    .lean();
 
   return [
     {

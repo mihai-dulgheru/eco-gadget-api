@@ -4,7 +4,7 @@ import { RecyclingLocation } from '../../models';
 async function getRecyclingLocationById(req, res) {
   try {
     const { id } = req.params;
-    const location = await RecyclingLocation.findById(id);
+    const location = await RecyclingLocation.findById(id).lean();
     if (!location) {
       return res.status(404).json({ message: 'Recycling location not found' });
     }

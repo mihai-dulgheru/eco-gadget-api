@@ -11,7 +11,7 @@ async function signUp(req, res) {
     });
   }
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ email }).lean();
   if (userExists) {
     return res.status(400).json({
       name: 'UserExistsError',

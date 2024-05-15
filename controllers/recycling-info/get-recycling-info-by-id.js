@@ -4,7 +4,7 @@ import { RecyclingInfo } from '../../models';
 async function getRecyclingInfoById(req, res) {
   try {
     const { id } = req.params;
-    const recyclingInfo = await RecyclingInfo.findById(id);
+    const recyclingInfo = await RecyclingInfo.findById(id).lean();
     if (!recyclingInfo) {
       return res
         .status(404)
