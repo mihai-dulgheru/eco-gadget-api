@@ -29,7 +29,6 @@ export default async function () {
           usage: 150,
         },
       ],
-      recyclingLocations: [recyclingLocations[0]._id],
       lifecycleAnalysis: {
         totalCO2Emissions: 250,
         suggestions: [
@@ -55,7 +54,6 @@ export default async function () {
           usage: 200,
         },
       ],
-      recyclingLocations: [recyclingLocations[0]._id],
       lifecycleAnalysis: {
         totalCO2Emissions: 150,
         suggestions: [
@@ -66,6 +64,14 @@ export default async function () {
         notificationsEnabled: true,
         optimizationPreferences: 'performance',
       },
+    },
+    {
+      email: 'recycling.manager@example.com',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      password: await bcrypt.hash('Password123!', 10),
+      role: 'recycling_manager',
+      recyclingLocations: [recyclingLocations[0]._id],
     },
   ];
 }

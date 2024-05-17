@@ -2,8 +2,8 @@ import { RecyclingLocation } from '../../models';
 
 // Update an existing recycling location
 async function updateRecyclingLocation(req, res) {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     const updatedLocation = await RecyclingLocation.findByIdAndUpdate(
       id,
       req.body,
@@ -15,8 +15,8 @@ async function updateRecyclingLocation(req, res) {
     res.status(200).json(updatedLocation);
   } catch (error) {
     res
-      .status(400)
-      .json({ message: 'Error updating recycling location', error: error });
+      .status(500)
+      .json({ message: 'Error updating the recycling location', error: error });
   }
 }
 

@@ -3,13 +3,13 @@ import { RecyclingLocation } from '../../models';
 // Add a new recycling location
 async function addRecyclingLocation(req, res) {
   try {
-    const newLocation = new RecyclingLocation(req.body);
-    await newLocation.save();
-    res.status(201).json(newLocation);
+    const location = new RecyclingLocation(req.body);
+    await location.save();
+    res.status(201).json(location);
   } catch (error) {
     res
-      .status(400)
-      .json({ message: 'Error adding new recycling location', error: error });
+      .status(500)
+      .json({ message: 'Error adding the recycling location', error: error });
   }
 }
 

@@ -6,6 +6,7 @@ import { errorHandler } from './middleware';
 import {
   accountsRouter,
   applianceRoutes,
+  messagesRouter,
   recyclingInfoRouter,
   recyclingLocationsRouter,
   usersRouter,
@@ -23,6 +24,7 @@ app.use(cookieParser());
 
 app.use('/accounts', accountsRouter);
 app.use('/appliances', applianceRoutes);
+app.use('/messages', messagesRouter);
 app.use('/recycling-info', recyclingInfoRouter);
 app.use('/recycling-locations', recyclingLocationsRouter);
 app.use('/users', usersRouter);

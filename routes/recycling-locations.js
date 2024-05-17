@@ -15,19 +15,19 @@ router.get(
 router.post(
   '/',
   authenticate,
-  authorize('admin'),
+  authorize('recycling_manager'),
   asyncWrapper(recyclingLocationsController.addRecyclingLocation)
 );
 router.put(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('recycling_manager'),
   asyncWrapper(recyclingLocationsController.updateRecyclingLocation)
 );
 router.delete(
   '/:id',
   authenticate,
-  authorize('admin'),
+  authorize('recycling_manager'),
   asyncWrapper(recyclingLocationsController.deleteRecyclingLocation)
 );
 

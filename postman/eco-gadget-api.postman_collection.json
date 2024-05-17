@@ -47,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"Password123!\"\r\n}",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"Password123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +75,8 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"token\", jsonData.idToken);"
+									"pm.collectionVariables.set(\"token\", jsonData.idToken);\r",
+									"pm.collectionVariables.set(\"email\", jsonData.email);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -120,7 +121,7 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"appliance_id\", jsonData[0]._id);"
+									"pm.collectionVariables.set(\"appliance_id\", jsonData[0]?._id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -709,6 +710,180 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get Messages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"locationId\": \"{{recycling_location_id}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"message_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -748,10 +923,6 @@
 			"key": "url",
 			"value": "http://localhost:5000",
 			"type": "string"
-		},
-		{
-			"key": "token",
-			"value": ""
 		}
 	]
 }

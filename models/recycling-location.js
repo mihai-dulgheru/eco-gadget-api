@@ -23,6 +23,7 @@ const recyclingLocationSchema = new Schema(
     regCom: { type: String, required: true },
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true },
+    messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   },
   {
     timestamps: true,

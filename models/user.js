@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import validator from 'validator';
 
-const energyUsageSchema = new mongoose.Schema({
-  applianceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Appliance' },
+const energyUsageSchema = new Schema({
+  applianceId: { type: Schema.Types.ObjectId, ref: 'Appliance' },
   timestamp: { type: Date, default: Date.now },
   usage: { type: Number },
 });
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     aiSettings: {
       notificationsEnabled: { type: Boolean, default: true },
@@ -18,7 +18,7 @@ const schema = new mongoose.Schema(
         default: 'balanced',
       },
     },
-    appliances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appliance' }],
+    appliances: [{ type: Schema.Types.ObjectId, ref: 'Appliance' }],
     email: {
       type: String,
       required: true,
@@ -64,9 +64,13 @@ const schema = new mongoose.Schema(
       url: { type: String },
     },
     recyclingLocations: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'RecyclingLocation' },
+      { type: Schema.Types.ObjectId, ref: 'RecyclingLocation' },
     ],
-    role: { type: String, enum: ['admin', 'user'], default: 'user' },
+    role: {
+      type: String,
+      enum: ['admin', 'user', 'recycling_manager'],
+      default: 'user',
+    },
   },
   { timestamps: true }
 );
@@ -85,6 +89,6 @@ schema.pre('save', async function (next) {
   }
 });
 
-const User = mongoose.model('User', schema);
+const User = model('User', schema);
 
 export default User;
