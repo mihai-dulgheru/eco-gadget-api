@@ -4,35 +4,12 @@ import { asyncWrapper, authenticate, authorize } from '../middleware';
 
 const router = Router();
 
-router.get(
-  '/',
-  authenticate,
-  authorize('user'),
-  asyncWrapper(applianceController.getAppliances)
-);
-router.get(
-  '/:id',
-  authenticate,
-  authorize('user'),
-  asyncWrapper(applianceController.getApplianceById)
-);
-router.post(
-  '/',
-  authenticate,
-  authorize('user'),
-  asyncWrapper(applianceController.addAppliance)
-);
-router.put(
-  '/:id',
-  authenticate,
-  authorize('user'),
-  asyncWrapper(applianceController.updateAppliance)
-);
-router.delete(
-  '/:id',
-  authenticate,
-  authorize('user'),
-  asyncWrapper(applianceController.deleteAppliance)
-);
+router.all('*', authenticate, authorize('user'));
+
+router.get('/', asyncWrapper(applianceController.getAppliances));
+router.get('/:id', asyncWrapper(applianceController.getApplianceById));
+router.post('/', asyncWrapper(applianceController.addAppliance));
+router.put('/:id', asyncWrapper(applianceController.updateAppliance));
+router.delete('/:id', asyncWrapper(applianceController.deleteAppliance));
 
 export default router;
