@@ -8,17 +8,17 @@ import {
 import { basename, extname } from 'path';
 
 // Get environment variables
-const bucket = process.env.DO_SPACES_BUCKET;
-const folder = process.env.DO_SPACES_FOLDER;
-const region = process.env.DO_SPACES_REGION;
+const bucket = process.env.AWS_BUCKET;
+const folder = process.env.AWS_FOLDER;
+const region = process.env.AWS_REGION;
 
 // Create a new S3 client
 const s3Client = new S3Client({
   credentials: {
-    accessKeyId: process.env.DO_SPACES_ACCESS_KEY,
-    secretAccessKey: process.env.DO_SPACES_SECRET_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
   },
-  endpoint: 'https://eco-gadget.fra1.digitaloceanspaces.com', // 'https://eco-gadget.s3.eu-north-1.amazonaws.com'
+  endpoint: 'https://eco-gadget.s3.eu-north-1.amazonaws.com',
   forcePathStyle: false,
   region,
 });
