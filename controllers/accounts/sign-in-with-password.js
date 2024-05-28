@@ -34,6 +34,7 @@ async function signInWithPassword(req, res) {
     email: user.email,
     localId: user._id,
     registered: true,
+    role: user.role,
   });
 }
 

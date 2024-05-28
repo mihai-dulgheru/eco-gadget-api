@@ -50,6 +50,7 @@ async function signUp(req, res) {
       email: user.email,
       localId: user._id,
       profilePicture: user.profilePicture.url, // Include profile picture URL in the response
+      role: user.role,
     });
   } catch (error) {
     return res.status(500).json({
