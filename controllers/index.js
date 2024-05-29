@@ -1,6 +1,6 @@
-export * as accountsController from './accounts';
-export * as applianceController from './appliances';
-export * as messagesController from './messages';
-export * as recyclingInfoController from './recycling-info';
-export * as recyclingLocationsController from './recycling-locations';
-export * as usersController from './users';
+export { default as accountsController } from './accounts';
+export { default as applianceController } from './appliances';
+export { default as messagesController } from './messages';
+export { default as recyclingInfoController } from './recycling-info';
+export { default as recyclingLocationsController } from './recycling-locations';
+export { default as usersController } from './users';
