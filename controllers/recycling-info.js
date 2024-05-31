@@ -11,10 +11,9 @@ async function addRecyclingInfo(req, res) {
     await newRecyclingInfo.save();
     res.status(201).json(newRecyclingInfo);
   } catch (error) {
-    res.status(400).json({
-      message: 'Error adding new recycling information',
-      error: error,
-    });
+    res
+      .status(400)
+      .json({ message: 'Error adding new recycling information', error });
   }
 }
 
@@ -34,7 +33,7 @@ async function deleteRecyclingInfo(req, res) {
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'Error deleting recycling information', error: error });
+      .json({ message: 'Error deleting recycling information', error });
   }
 }
 
@@ -50,10 +49,9 @@ async function getRecyclingInfoById(req, res) {
     }
     res.status(200).json(recyclingInfo);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error fetching the recycling information',
-      error: error,
-    });
+    res
+      .status(500)
+      .json({ message: 'Error fetching the recycling information', error });
   }
 }
 
@@ -67,7 +65,7 @@ async function getRecyclingInfos(_req, res) {
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'Error fetching recycling information', error: error });
+      .json({ message: 'Error fetching recycling information', error });
   }
 }
 
@@ -92,7 +90,7 @@ async function updateRecyclingInfo(req, res) {
   } catch (error) {
     res
       .status(400)
-      .json({ message: 'Error updating recycling information', error: error });
+      .json({ message: 'Error updating recycling information', error });
   }
 }
 

@@ -4,7 +4,7 @@ import { usersController } from '../controllers';
 import { asyncWrapper, authenticate, authorize } from '../middleware';
 
 const router = Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.all('*', authenticate, authorize('user'));
 

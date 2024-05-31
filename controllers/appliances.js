@@ -15,9 +15,7 @@ async function addAppliance(req, res) {
     // Send a response
     res.status(201).json(newAppliance);
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: 'Error adding new appliance', error: error });
+    res.status(400).json({ message: 'Error adding new appliance', error });
   }
 }
 
@@ -37,7 +35,7 @@ async function deleteAppliance(req, res) {
     // Send a response
     res.status(200).json({ message: 'Appliance successfully deleted' });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting appliance', error: error });
+    res.status(500).json({ message: 'Error deleting appliance', error });
   }
 }
 
@@ -51,9 +49,7 @@ async function getApplianceById(req, res) {
     }
     res.status(200).json(appliance);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error fetching the appliance', error: error });
+    res.status(500).json({ message: 'Error fetching the appliance', error });
   }
 }
 
@@ -66,9 +62,7 @@ async function getAppliances(req, res) {
 
     res.status(200).json(appliances);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error fetching appliances', error: error });
+    res.status(500).json({ message: 'Error fetching appliances', error });
   }
 }
 
@@ -84,7 +78,7 @@ async function updateAppliance(req, res) {
     }
     res.status(200).json(appliance);
   } catch (error) {
-    res.status(400).json({ message: 'Error updating appliance', error: error });
+    res.status(400).json({ message: 'Error updating appliance', error });
   }
 }
 

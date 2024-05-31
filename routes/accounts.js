@@ -4,7 +4,7 @@ import { accountsController } from '../controllers';
 import { asyncWrapper, authenticate } from '../middleware';
 
 const router = Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get(
   '/lookup',

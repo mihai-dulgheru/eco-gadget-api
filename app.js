@@ -1,6 +1,7 @@
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import express from 'express';
+import helmet from 'helmet';
 import logger from 'morgan';
 import { errorHandler } from './middleware';
 import {
@@ -22,6 +23,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 
 app.use('/accounts', accountsRouter);
 app.use('/appliances', applianceRoutes);

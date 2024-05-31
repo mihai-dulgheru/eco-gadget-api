@@ -15,10 +15,7 @@ async function addMessage(req, res) {
 
     res.status(201).json(message);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error adding the message',
-      error: error,
-    });
+    res.status(500).json({ message: 'Error adding the message', error });
   }
 }
 
@@ -40,10 +37,7 @@ async function deleteMessage(req, res) {
 
     res.status(200).json({ message: 'Message deleted' });
   } catch (error) {
-    res.status(500).json({
-      message: 'Error deleting the message',
-      error: error,
-    });
+    res.status(500).json({ message: 'Error deleting the message', error });
   }
 }
 
@@ -57,10 +51,7 @@ async function getMessageById(req, res) {
     }
     res.status(200).json(message);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error fetching the message',
-      error: error,
-    });
+    res.status(500).json({ message: 'Error fetching the message', error });
   }
 }
 
@@ -70,10 +61,7 @@ async function getMessages(_req, res) {
     const messages = await Message.find().lean();
     res.status(200).json(messages);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error fetching messages',
-      error: error,
-    });
+    res.status(500).json({ message: 'Error fetching messages', error });
   }
 }
 
@@ -89,10 +77,7 @@ async function updateMessage(req, res) {
     }
     res.status(200).json(updatedMessage);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error updating the message',
-      error: error,
-    });
+    res.status(500).json({ message: 'Error updating the message', error });
   }
 }
 

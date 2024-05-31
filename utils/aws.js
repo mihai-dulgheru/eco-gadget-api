@@ -14,13 +14,11 @@ const region = process.env.AWS_REGION;
 
 // Create a new S3 client
 const s3Client = new S3Client({
+  region,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_KEY,
   },
-  endpoint: 'https://eco-gadget.s3.eu-north-1.amazonaws.com',
-  forcePathStyle: false,
-  region,
 });
 
 // Upload file to AWS
@@ -43,7 +41,7 @@ const upload = async (filename, data, options = {}) => {
     const data = await s3Client.send(command);
     return { data, key: getKey(params.Key), name: getName(params.Key) };
   } catch (err) {
-    console.error('Error uploading to DigitalOcean', err);
+    console.error('Error uploading to AWS', err);
     throw err;
   }
 };
@@ -59,7 +57,7 @@ const remove = async (filename) => {
   try {
     return await s3Client.send(command);
   } catch (err) {
-    console.error('Error removing from DigitalOcean', err);
+    console.error('Error removing from AWS', err);
     throw err;
   }
 };
@@ -86,7 +84,7 @@ const getFiles = async (folder) => {
     }
     return files;
   } catch (err) {
-    console.error('Error getting files from DigitalOcean', err);
+    console.error('Error getting files from AWS', err);
     throw err;
   }
 };
@@ -105,7 +103,7 @@ const removeFolder = async (folder) => {
       await s3Client.send(command);
     }
   } catch (error) {
-    console.error('Error removing folder from DigitalOcean', error);
+    console.error('Error removing folder from AWS', error);
     throw error;
   }
 };
@@ -121,7 +119,7 @@ const removeFile = async (key) => {
   try {
     return await s3Client.send(command);
   } catch (err) {
-    console.error('Error removing from DigitalOcean', err);
+    console.error('Error removing from AWS', err);
     throw err;
   }
 };
@@ -143,7 +141,7 @@ const getKey = (path) => {
 
 // Get the public URL of the file
 const getPublicUrl = (filename) => {
-  return `https://${bucket}.${region}.digitaloceanspaces.com/${filename}`;
+  return `https://${bucket}.s3.${region}.amazonaws.com/${folder}/${filename}`;
 };
 
 // Get the name of the file
@@ -173,7 +171,7 @@ const download = async (filename) => {
     });
     return data;
   } catch (err) {
-    console.error('Error downloading from DigitalOcean', err);
+    console.error('Error downloading from AWS', err);
     throw err;
   }
 };
