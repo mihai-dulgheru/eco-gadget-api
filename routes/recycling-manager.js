@@ -25,6 +25,17 @@ router.post(
   upload.single('image'),
   asyncWrapper(recyclingManagerController.addRecyclingLocation)
 );
+router.patch(
+  '/recycling-locations/multipart-upload',
+  upload.single('file'),
+  (req, res) => {
+    // You can access other HTTP parameters. They are located in the body object.
+    console.log('file: ', req.file);
+    console.log('body: ', req.body);
+    console.log('headers: ', req.headers);
+    res.json({ message: 'File uploaded successfully' });
+  }
+);
 router.put(
   '/recycling-locations/:id',
   upload.single('image'),
