@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../models';
 
-const authenticate = (req, res, next) => {
+function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res
@@ -29,6 +29,6 @@ const authenticate = (req, res, next) => {
       return res.status(500).json({ message: 'Failed to retrieve user role' });
     }
   });
-};
+}
 
 export default authenticate;
