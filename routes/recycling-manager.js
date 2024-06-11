@@ -34,6 +34,7 @@ router.post(
 router.put(
   '/recycling-locations/:id',
   upload.single('image'),
+  convertFormDataToJson,
   asyncWrapper(recyclingManagerController.updateRecyclingLocation)
 );
 router.delete(

@@ -1,5 +1,5 @@
 import { Message, RecyclingLocation, User } from '../models';
-import { uploadImageToS3 } from '../utils';
+import { deleteImageFromS3, uploadImageToS3 } from '../utils';
 
 async function addRecyclingLocation(req, res) {
   try {
@@ -31,9 +31,22 @@ async function deleteRecyclingLocation(req, res) {
   try {
     const { id } = req.params;
     const deletedLocation = await RecyclingLocation.findByIdAndDelete(id);
+
     if (!deletedLocation) {
       return res.status(404).json({ message: 'Recycling location not found' });
     }
+
+    const updateUserPromise = User.updateOne(
+      { recyclingLocations: id },
+      { $pull: { recyclingLocations: id } }
+    );
+
+    const deleteImagePromise = deletedLocation.image
+      ? deleteImageFromS3(deletedLocation.image)
+      : Promise.resolve();
+
+    await Promise.all([updateUserPromise, deleteImagePromise]);
+
     res.status(200).json({ message: 'Recycling location deleted' });
   } catch (error) {
     res
@@ -106,14 +119,33 @@ async function getStatistics(_req, res) {
 async function updateRecyclingLocation(req, res) {
   try {
     const { id } = req.params;
-    const updatedLocation = await RecyclingLocation.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }
-    );
-    if (!updatedLocation) {
+    const location = await RecyclingLocation.findById(id);
+
+    if (!location) {
       return res.status(404).json({ message: 'Recycling location not found' });
     }
+
+    let imageUrl = location.image;
+
+    if (req.file) {
+      // Delete the old image if it exists and a new file is uploaded
+      if (location.image) {
+        await deleteImageFromS3(location.image);
+      }
+      imageUrl = await uploadImageToS3(req.file);
+    }
+
+    const updatedData = {
+      ...req.body,
+      image: imageUrl,
+    };
+
+    const updatedLocation = await RecyclingLocation.findByIdAndUpdate(
+      id,
+      updatedData,
+      { new: true }
+    );
+
     res.status(200).json(updatedLocation);
   } catch (error) {
     res
