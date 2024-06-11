@@ -1,3 +1,4 @@
+import sgMail from '@sendgrid/mail';
 import { Message, RecyclingLocation, User } from '../models';
 import { deleteImageFromS3, uploadImageToS3 } from '../utils';
 
@@ -116,6 +117,59 @@ async function getStatistics(_req, res) {
   }
 }
 
+async function markMessageAsRead(req, res) {
+  try {
+    const { messageId } = req.params;
+    const message = await Message.findByIdAndUpdate(
+      messageId,
+      { read: true },
+      { new: true }
+    );
+
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    res.status(200).json(message);
+  } catch (error) {
+    res.status(500).json({ message: 'Error marking message as read', error });
+  }
+}
+
+async function respondToMessage(req, res) {
+  try {
+    const { messageId } = req.params;
+    const message = await Message.findByIdAndUpdate(
+      messageId,
+      { response: req.body.response },
+      { new: true }
+    );
+
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: message.email,
+      from: process.env.SENDGRID_EMAIL,
+      subject: 'Răspuns la mesajul dvs.',
+      text: req.body.response,
+      html: `<p>Stimate/Stimată ${message.name},</p>
+             <p>Vă mulțumim pentru mesajul dvs. și pentru interesul acordat.</p>
+             <p>${req.body.response}</p>
+             <p>Dacă aveți alte întrebări sau nelămuriri, nu ezitați să ne contactați.</p>
+             <p>Cu respect,</p>
+             <p>Echipa EcoGadget</p>`,
+    };
+    await sgMail.send(msg);
+
+    res.status(200).json(message);
+  } catch (error) {
+    res.status(500).json({ message: 'Error responding to message', error });
+  }
+}
+
 async function updateRecyclingLocation(req, res) {
   try {
     const { id } = req.params;
@@ -161,5 +215,7 @@ export default {
   getRecyclingLocationById,
   getRecyclingLocations,
   getStatistics,
+  markMessageAsRead,
+  respondToMessage,
   updateRecyclingLocation,
 };

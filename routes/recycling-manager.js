@@ -42,5 +42,13 @@ router.delete(
   asyncWrapper(recyclingManagerController.deleteRecyclingLocation)
 );
 router.get('/messages', asyncWrapper(recyclingManagerController.getMessages));
+router.post(
+  '/messages/:messageId/mark-as-read',
+  asyncWrapper(recyclingManagerController.markMessageAsRead)
+);
+router.post(
+  '/messages/:messageId/response',
+  asyncWrapper(recyclingManagerController.respondToMessage)
+);
 
 export default router;

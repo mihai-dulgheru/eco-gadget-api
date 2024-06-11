@@ -18,6 +18,8 @@ const messageSchema = new Schema(
     },
     message: { type: String, required: true },
     name: { type: String, required: true },
+    read: { type: Boolean, default: false },
+    response: { type: String },
   },
   { timestamps: true }
 );
