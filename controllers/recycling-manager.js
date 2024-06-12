@@ -96,7 +96,7 @@ async function getRecyclingLocations(_req, res) {
 async function getStatistics(_req, res) {
   try {
     const recyclingLocationCount = await RecyclingLocation.countDocuments();
-    const messageCount = await Message.countDocuments();
+    const messageCount = await Message.countDocuments({ read: false });
     const latestRecyclingLocations = await RecyclingLocation.find()
       .sort({ createdAt: -1 })
       .limit(5)
