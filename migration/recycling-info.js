@@ -5,70 +5,70 @@ export default async function () {
     {
       date: formatDate(new Date(), 'yyyy-MM-dd'),
       location: {
-        latitude: 44.43301523279083,
-        longitude: 26.040600654474453,
-        name: 'Street Name, City',
+        latitude: 44.4268,
+        longitude: 26.1025,
+        name: 'Strada Principală, București',
       },
       picture: {
-        alt: 'Recycling Info',
+        alt: 'Informații despre reciclare',
         url: 'https://www.epa.gov/system/files/styles/medium/private/images/2023-10/rrb.jpg?itok=V4cyuIxw',
       },
       sections: [
         {
           content:
-            'Recycling is the process of converting waste materials into new materials and objects. It is an alternative to "conventional" waste disposal that can save material and help lower greenhouse gas emissions.',
-          heading: 'Recycling Basics',
+            'Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi. Este o alternativă la eliminarea convențională a deșeurilor, care poate economisi materiale și poate reduce emisiile de gaze cu efect de seră.',
+          heading: 'Bazele reciclării',
         },
         {
           images: [
             {
-              alt: 'Recycling Basics',
+              alt: 'Bazele reciclării',
               url: 'https://www.epa.gov/system/files/styles/medium/private/images/2023-10/recycle.jpg?itok=PuKbSHlC',
             },
           ],
         },
         {
           video: {
-            title: 'Recycling Basics',
-            url: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+            title: 'Bazele reciclării',
+            url: 'https://videos.pexels.com/video-files/3196599/3196599-hd_1280_720_25fps.mp4',
           },
         },
         {
           links: [
             {
-              title: 'Recycling Guide',
+              title: 'Ghid de reciclare',
               url: 'https://www.epa.gov/recycle',
             },
           ],
         },
         {
           contact: {
-            address: '123 Main St, YourCity',
-            email: 'example@email.com',
-            phone: '+1234567890',
+            address: 'Strada Principală, Nr. 123, București',
+            email: 'reciclare@example.com',
+            phone: '+40314123456',
           },
         },
         {
           social: {
-            facebook: 'https://www.facebook.com',
-            instagram: 'https://www.instagram.com',
-            twitter: 'https://www.twitter.com',
-            youtube: 'https://www.youtube.com',
+            facebook: 'https://www.facebook.com/reciclare',
+            instagram: 'https://www.instagram.com/reciclare',
+            twitter: 'https://www.twitter.com/reciclare',
+            youtube: 'https://www.youtube.com/reciclare',
           },
         },
         {
           faqs: [
             {
               answer:
-                'Recycling is the process of converting waste materials into new materials and objects. It is an alternative to "conventional" waste disposal that can save material and help lower greenhouse gas emissions.',
-              question: 'What is recycling?',
+                'Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi.',
+              question: 'Ce este reciclarea?',
             },
           ],
         },
       ],
-      subtitle: 'Learn how to recycle',
-      tags: ['recycling', 'environment', 'sustainability'],
-      title: 'Recycling Info',
+      subtitle: 'Aflați cum să reciclați',
+      tags: ['reciclare', 'mediu', 'sustenabilitate'],
+      title: 'Informații despre reciclare',
     },
   ];
 }

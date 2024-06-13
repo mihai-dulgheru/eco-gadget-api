@@ -6,10 +6,17 @@ export default async function () {
   return [
     {
       locationId: location._id,
-      email: 'lorem.ipsum@example.com',
+      email: 'contact@example.com',
       message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porta metus non tincidunt fermentum. Fusce ac vulputate neque, at ullamcorper nulla.',
-      name: 'James Wilson',
+        'Bună ziua, am nevoie de informații despre reciclarea unui frigider vechi.',
+      name: 'Andrei Popescu',
+    },
+    {
+      locationId: location._id,
+      email: 'info@example.com',
+      message:
+        'Bună ziua, ce opțiuni de reciclare aveți pentru aparate electrocasnice?',
+      name: 'Maria Ionescu',
     },
   ];
 }

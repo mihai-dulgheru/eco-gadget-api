@@ -1,13 +1,13 @@
 export default async function () {
   return [
     {
-      name: 'Recycling Center 1',
-      address: '123 Main St, YourCity',
+      name: 'Centrul de Reciclare București',
+      address: 'Strada Principală, Nr. 123, București',
       image:
-        'https://sustainability.gsu.edu/files/2022/07/Recycling-Center-Commons.jpg',
-      phone: '+1234567890',
+        'https://eco-gadget.s3.eu-north-1.amazonaws.com/assets/noah-buscher-x8ZStukS2PM-unsplash.jpg',
+      phone: '+40314123456',
       description:
-        'This is a state-of-the-art facility that specializes in recycling electronics and hazardous materials.',
+        'Acesta este un centru modern de reciclare specializat în reciclarea electronicelor și materialelor periculoase.',
       schedule: {
         monday: '9:00 AM - 5:00 PM',
         tuesday: '9:00 AM - 5:00 PM',
@@ -15,13 +15,13 @@ export default async function () {
         thursday: '9:00 AM - 5:00 PM',
         friday: '9:00 AM - 5:00 PM',
         saturday: '10:00 AM - 2:00 PM',
-        sunday: 'Closed',
+        sunday: 'Închis',
       },
-      company: 'EcoRecycle Inc.',
-      cui: 'RO12345678',
-      regCom: 'J12/3456/2009',
-      latitude: 44.43301523279083,
-      longitude: 26.040600654474453,
+      company: 'EcoReciclare SRL',
+      cui: 'RO98765432',
+      regCom: 'J40/1234/2010',
+      latitude: 44.4268,
+      longitude: 26.1025,
     },
   ];
 }

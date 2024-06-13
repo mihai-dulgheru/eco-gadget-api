@@ -6,8 +6,8 @@ const materialCompositionSchema = new Schema({
   other: { type: Number, required: true },
 });
 
-const DISPOSAL_OPTIONS = ['Recyclable', 'Non-recyclable', 'Hazardous'];
-const EFFICIENCY_RATINGS = [
+export const DISPOSAL_OPTIONS = ['Recyclable', 'Non-recyclable', 'Hazardous'];
+export const EFFICIENCY_RATINGS = [
   'A+++',
   'A++',
   'A+',

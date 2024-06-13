@@ -10,29 +10,29 @@ export default async function () {
   return [
     {
       email: 'admin@example.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      password: await bcrypt.hash('Password123!', 10),
+      firstName: 'Ana',
+      lastName: 'Popescu',
+      password: await bcrypt.hash('Parola123!', 10),
       role: 'admin',
     },
     {
       email: 'user1@example.com',
-      firstName: 'John',
-      lastName: 'Smith',
-      password: await bcrypt.hash('Password123!', 10),
+      firstName: 'Ion',
+      lastName: 'Ionescu',
+      password: await bcrypt.hash('Parola123!', 10),
       phone: '+40712345678',
       appliances: [appliances[0]._id],
       energyUsage: [
         {
           applianceId: appliances[0]._id,
           timestamp: new Date(),
-          usage: 150,
+          usage: 100,
         },
       ],
       lifecycleAnalysis: {
-        totalCO2Emissions: 250,
+        totalCO2Emissions: 200,
         suggestions: [
-          'Consider upgrading your refrigerator for better efficiency.',
+          'Considerați înlocuirea frigiderului pentru o eficiență mai bună.',
         ],
       },
       aiSettings: {
@@ -42,22 +42,22 @@ export default async function () {
     },
     {
       email: 'user2@example.com',
-      firstName: 'Jane',
-      lastName: 'Doe',
-      password: await bcrypt.hash('Password123!', 10),
+      firstName: 'Maria',
+      lastName: 'Popa',
+      password: await bcrypt.hash('Parola123!', 10),
       phone: '+40789456123',
       appliances: [appliances[1]._id],
       energyUsage: [
         {
           applianceId: appliances[1]._id,
           timestamp: new Date(),
-          usage: 200,
+          usage: 180,
         },
       ],
       lifecycleAnalysis: {
         totalCO2Emissions: 150,
         suggestions: [
-          'Consider recycling your microwave for better sustainability.',
+          'Considerați reciclarea cuptorului cu microunde pentru o sustenabilitate mai bună.',
         ],
       },
       aiSettings: {
@@ -66,10 +66,10 @@ export default async function () {
       },
     },
     {
-      email: 'recycling.manager@example.com',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      password: await bcrypt.hash('Password123!', 10),
+      email: 'manager.reciclare@example.com',
+      firstName: 'George',
+      lastName: 'Vasilescu',
+      password: await bcrypt.hash('Parola123!', 10),
       role: 'recycling_manager',
       recyclingLocations: [recyclingLocations[0]._id],
     },
