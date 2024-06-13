@@ -1,4 +1,5 @@
 import sgMail from '@sendgrid/mail';
+import { startOfMonth, subMonths } from 'date-fns';
 import { Message, RecyclingLocation, User } from '../models';
 import { deleteImageFromS3, uploadImageToS3 } from '../utils';
 
@@ -97,6 +98,34 @@ async function getStatistics(_req, res) {
   try {
     const recyclingLocationCount = await RecyclingLocation.countDocuments();
     const messageCount = await Message.countDocuments({ read: false });
+
+    // Get the date 12 months ago from today
+    const twelveMonthsAgo = startOfMonth(subMonths(new Date(), 11));
+
+    // Aggregation for recycling locations
+    const recyclingLocationAggregation = await RecyclingLocation.aggregate([
+      { $match: { createdAt: { $gte: twelveMonthsAgo } } },
+      {
+        $group: {
+          _id: { $month: '$createdAt' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    // Aggregation for messages
+    const messageAggregation = await Message.aggregate([
+      { $match: { createdAt: { $gte: twelveMonthsAgo } } },
+      {
+        $group: {
+          _id: { $month: '$createdAt' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
     const latestRecyclingLocations = await RecyclingLocation.find()
       .sort({ createdAt: -1 })
       .limit(5)
@@ -111,6 +140,8 @@ async function getStatistics(_req, res) {
       messageCount,
       latestRecyclingLocations,
       latestMessages,
+      recyclingLocationAggregation,
+      messageAggregation,
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching statistics', error });
