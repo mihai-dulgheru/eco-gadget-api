@@ -11,5 +11,9 @@ router.get('/:id', asyncWrapper(applianceController.getApplianceById));
 router.post('/', asyncWrapper(applianceController.addAppliance));
 router.put('/:id', asyncWrapper(applianceController.updateAppliance));
 router.delete('/:id', asyncWrapper(applianceController.deleteAppliance));
+router.post(
+  '/recommendations',
+  asyncWrapper(applianceController.getRecommendations)
+);
 
 export default router;

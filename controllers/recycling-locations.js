@@ -8,7 +8,13 @@ async function getRecyclingLocationById(req, res) {
     if (!location) {
       return res.status(404).json({ message: 'Recycling location not found' });
     }
-    res.status(200).json(location);
+    // Convert GeoJSON to latitude and longitude
+    const result = {
+      ...location,
+      latitude: location.location.coordinates[1],
+      longitude: location.location.coordinates[0],
+    };
+    res.status(200).json(result);
   } catch (error) {
     res
       .status(500)
@@ -22,7 +28,13 @@ async function getRecyclingLocations(_req, res) {
     const locations = await RecyclingLocation.find()
       .select('-schedule._id')
       .lean();
-    res.status(200).json(locations);
+    // Convert GeoJSON to latitude and longitude
+    const result = locations.map((location) => ({
+      ...location,
+      latitude: location.location.coordinates[1],
+      longitude: location.location.coordinates[0],
+    }));
+    res.status(200).json(result);
   } catch (error) {
     res
       .status(500)

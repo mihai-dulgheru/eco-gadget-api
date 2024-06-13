@@ -59,7 +59,15 @@ async function seedDatabase() {
     console.log('✔️');
 
     console.log('Inserting recycling location data...');
-    await RecyclingLocation.insertMany(await recyclingLocations());
+    const locations = await recyclingLocations();
+    const updatedLocations = locations.map((location) => ({
+      ...location,
+      location: {
+        type: 'Point',
+        coordinates: [location.longitude, location.latitude],
+      },
+    }));
+    await RecyclingLocation.insertMany(updatedLocations);
     console.log('✔️');
 
     console.log('Inserting messages data...');

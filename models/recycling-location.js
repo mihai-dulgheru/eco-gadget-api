@@ -21,14 +21,18 @@ const recyclingLocationSchema = new Schema(
     company: { type: String, required: true },
     cui: { type: String, required: true },
     regCom: { type: String, required: true },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true },
+    location: {
+      type: { type: String, default: 'Point' },
+      coordinates: { type: [Number], required: true },
+    },
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   },
   {
     timestamps: true,
   }
 );
+
+recyclingLocationSchema.index({ location: '2dsphere' });
 
 const RecyclingLocation = model('RecyclingLocation', recyclingLocationSchema);
 
