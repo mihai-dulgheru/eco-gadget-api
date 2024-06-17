@@ -6,8 +6,8 @@
     "build": "babel . -d dist",
     "dev": "SET DEBUG=eco-gadget-api:* & nodemon --exec babel-node --presets=@babel/preset-env -- ./bin/www.js",
     "seed": "babel-node migration/seed-data.js",
-    "start:prod": "DEBUG=eco-gadget-api:* node ./dist/bin/www.js",
-    "start": "SET DEBUG=eco-gadget-api:* & node ./dist/bin/www.js",
+    "start:prod": "DEBUG=eco-gadget-api:* yarn build node ./dist/bin/www.js",
+    "start": "SET DEBUG=eco-gadget-api:* & yarn build & node ./dist/bin/www.js",
     "test": "jest"
   },
   "dependencies": {

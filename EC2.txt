@@ -1,0 +1,56 @@
+sudo apt update
+sudo apt upgrade
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt-get install -y nodejs
+sudo apt install git-all
+sudo npm install --global yarn
+
+git config --global user.name "Mihai-Nicolae Dulgheru"
+git config --global user.email "dulgherumihai19@stud.ase.ro"
+
+git clone https://github.com/mihai-dulgheru/eco-gadget-api.git
+cd eco-gadget-api/
+sudo nano .env
+yarn
+yarn build
+yarn start:prod
+
+sudo nano /etc/systemd/system/eco-gadget-api.service
+
+
+[Unit]
+Description=Node.js App
+After=network.target multi-user.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/eco-gadget-api
+ExecStart=/usr/bin/yarn start:prod
+Restart=always
+Environment=NODE_ENV=production
+EnvironmentFile=/home/ubuntu/eco-gadget-api/.env
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=eco-gadget-api
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable eco-gadget-api.service
+sudo systemctl start eco-gadget-api.service
+sudo systemctl status eco-gadget-api.service
+
+# Restart service
+sudo systemctl restart eco-gadget-api.service
+
+# Stop service
+sudo systemctl stop eco-gadget-api.service
+
+# View Logs
+sudo journalctl -u eco-gadget-api.service
+
+# Tail logs
+sudo journalctl -fu eco-gadget-api.service
