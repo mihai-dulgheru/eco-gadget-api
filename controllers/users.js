@@ -61,6 +61,46 @@ async function deleteUser(req, res) {
   }
 }
 
+// Get a user's personal info
+async function getPersonalInfo(req, res) {
+  const { _id } = req.user;
+
+  try {
+    const user = await User.findById(_id).lean();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user', error });
+  }
+}
+
+// Update a user's name
+async function updateName(req, res) {
+  const { _id } = req.user;
+  const { firstName, lastName } = req.body;
+
+  try {
+    if (!firstName || !lastName) {
+      return res.status(400).json({
+        message: 'Please provide both first and last name',
+      });
+    }
+    const user = await User.findByIdAndUpdate(
+      _id,
+      { firstName, lastName },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user's name", error });
+  }
+}
+
 // Update a user
 async function updateUser(req, res) {
   const { _id } = req.user;
@@ -97,4 +137,9 @@ async function updateUser(req, res) {
   }
 }
 
-export default { deleteUser, updateUser };
+export default {
+  deleteUser,
+  getPersonalInfo,
+  updateName,
+  updateUser,
+};
