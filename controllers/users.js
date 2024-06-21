@@ -101,6 +101,27 @@ async function updateName(req, res) {
   }
 }
 
+// Update a user's phone number
+async function updatePhone(req, res) {
+  const { _id } = req.user;
+  const { phone } = req.body;
+
+  try {
+    if (!phone) {
+      return res.status(400).json({ message: 'Please provide a phone number' });
+    }
+    const user = await User.findByIdAndUpdate(_id, { phone }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating user's phone number", error });
+  }
+}
+
 // Update a user
 async function updateUser(req, res) {
   const { _id } = req.user;
@@ -141,5 +162,6 @@ export default {
   deleteUser,
   getPersonalInfo,
   updateName,
+  updatePhone,
   updateUser,
 };

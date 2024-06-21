@@ -16,5 +16,6 @@ router.patch(
   asyncWrapper(usersController.updateUser)
 );
 router.put('/name', asyncWrapper(usersController.updateName));
+router.put('/phone', asyncWrapper(usersController.updatePhone));
 
 export default router;
