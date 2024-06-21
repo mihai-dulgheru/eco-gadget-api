@@ -1,18 +1,60 @@
-import { User } from '../models';
+import {
+  Appliance,
+  Message,
+  RecommendationStats,
+  RecyclingLocation,
+  User,
+} from '../models';
 import aws from '../utils/aws';
 
 // Delete a user
 async function deleteUser(req, res) {
   const { _id } = req.user;
 
-  // Optionally, delete the profile picture from S3 if exists
   try {
+    // Retrieve user data
     const user = await User.findById(_id).lean();
-    if (user && user.profilePicture && user.profilePicture.url) {
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Optionally, delete the profile picture from S3 if exists
+    if (user.profilePicture?.url) {
       await aws.remove(aws.getKey(user.profilePicture.url));
     }
 
+    const { appliances, email } = user;
+
+    // Fetch messages and delete related data in parallel
+    const messagesPromise = Message.find({ email }).select('_id').lean();
+    const deleteAppliancesPromise = Appliance.deleteMany({
+      _id: { $in: appliances },
+    });
+    const deleteRecommendationStatsPromise = RecommendationStats.deleteMany({
+      userId: _id,
+    });
+
+    const [messages] = await Promise.all([
+      messagesPromise,
+      deleteAppliancesPromise,
+      deleteRecommendationStatsPromise,
+    ]);
+
+    const messageIds = messages.map((message) => message._id);
+    const deleteMessagesPromise = Message.deleteMany({
+      _id: { $in: messageIds },
+    });
+    const updateRecyclingLocationsPromise = RecyclingLocation.updateMany(
+      { messages: { $in: messageIds } },
+      { $pull: { messages: { $in: messageIds } } }
+    );
+
+    await Promise.all([deleteMessagesPromise, updateRecyclingLocationsPromise]);
+
+    // Delete the user
     await User.findByIdAndDelete(_id);
+
     res.status(200).json({ message: 'User successfully deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting user', error });
