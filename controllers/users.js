@@ -1,3 +1,4 @@
+import { isBoolean } from 'lodash';
 import {
   Appliance,
   Message,
@@ -61,6 +62,21 @@ async function deleteUser(req, res) {
   }
 }
 
+// Get a user's AI settings
+async function getAISettings(req, res) {
+  const { _id } = req.user;
+
+  try {
+    const user = await User.findById(_id).select('aiSettings').lean();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user.aiSettings);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user AI settings', error });
+  }
+}
+
 // Get a user's personal info
 async function getPersonalInfo(req, res) {
   const { _id } = req.user;
@@ -73,6 +89,31 @@ async function getPersonalInfo(req, res) {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user', error });
+  }
+}
+
+// Update a user's AI settings
+async function updateAISettings(req, res) {
+  const { _id } = req.user;
+  const { notificationsEnabled } = req.body;
+
+  try {
+    if (!isBoolean(notificationsEnabled)) {
+      return res
+        .status(400)
+        .json({ message: 'Please provide notificationsEnabled' });
+    }
+    const user = await User.findByIdAndUpdate(
+      _id,
+      { 'aiSettings.notificationsEnabled': notificationsEnabled },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user AI settings', error });
   }
 }
 
@@ -160,7 +201,9 @@ async function updateUser(req, res) {
 
 export default {
   deleteUser,
+  getAISettings,
   getPersonalInfo,
+  updateAISettings,
   updateName,
   updatePhone,
   updateUser,
