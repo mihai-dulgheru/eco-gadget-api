@@ -18,6 +18,7 @@ router.patch(
 );
 router.put('/ai-settings', asyncWrapper(usersController.updateAISettings));
 router.put('/name', asyncWrapper(usersController.updateName));
+router.put('/password', asyncWrapper(usersController.updatePassword));
 router.put('/phone', asyncWrapper(usersController.updatePhone));
 
 export default router;

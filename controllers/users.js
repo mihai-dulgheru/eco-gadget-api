@@ -142,6 +142,34 @@ async function updateName(req, res) {
   }
 }
 
+// Update a user's password
+async function updatePassword(req, res) {
+  const { _id } = req.user;
+  const { password, confirmPassword } = req.body;
+
+  try {
+    if (!password || !confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Please provide both password and confirmPassword' });
+    }
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Passwords do not match. Please try again' });
+    }
+    const user = await User.findById(_id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.password = password;
+    await user.save();
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating password', error });
+  }
+}
+
 // Update a user's phone number
 async function updatePhone(req, res) {
   const { _id } = req.user;
@@ -205,6 +233,7 @@ export default {
   getPersonalInfo,
   updateAISettings,
   updateName,
+  updatePassword,
   updatePhone,
   updateUser,
 };
