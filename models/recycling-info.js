@@ -48,7 +48,7 @@ const recyclingInfoSchema = new Schema(
   {
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     date: { type: Date, default: Date.now },
-    location: { latitude: Number, longitude: Number, name: String },
+    location: { longitude: Number, latitude: Number, name: String },
     picture: imageSchema,
     sections: [sectionSchema],
     subtitle: String,

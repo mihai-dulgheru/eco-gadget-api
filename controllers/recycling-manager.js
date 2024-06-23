@@ -29,8 +29,8 @@ async function addRecyclingLocation(req, res) {
 
     res.status(201).json({
       ...location.toObject(),
-      latitude: location.location.coordinates[1],
       longitude: location.location.coordinates[0],
+      latitude: location.location.coordinates[1],
     });
   } catch (error) {
     res.status(500).json({ message: 'Error adding recycling location', error });
@@ -245,8 +245,8 @@ async function updateRecyclingLocation(req, res) {
 
     res.status(200).json({
       ...updatedLocation.toObject(),
-      latitude: updatedLocation.location.coordinates[1],
       longitude: updatedLocation.location.coordinates[0],
+      latitude: updatedLocation.location.coordinates[1],
     });
   } catch (error) {
     res

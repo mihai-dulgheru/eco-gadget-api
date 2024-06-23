@@ -11,8 +11,8 @@ async function getRecyclingLocationById(req, res) {
     // Convert GeoJSON to latitude and longitude
     const result = {
       ...location,
-      latitude: location.location.coordinates[1],
       longitude: location.location.coordinates[0],
+      latitude: location.location.coordinates[1],
     };
     res.status(200).json(result);
   } catch (error) {
@@ -31,8 +31,8 @@ async function getRecyclingLocations(_req, res) {
     // Convert GeoJSON to latitude and longitude
     const result = locations.map((location) => ({
       ...location,
-      latitude: location.location.coordinates[1],
       longitude: location.location.coordinates[0],
+      latitude: location.location.coordinates[1],
     }));
     res.status(200).json(result);
   } catch (error) {

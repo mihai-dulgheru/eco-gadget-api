@@ -20,8 +20,8 @@ export default async function () {
       company: 'EcoReciclare SRL',
       cui: 'RO98765432',
       regCom: 'J40/1234/2010',
-      latitude: 44.4268,
       longitude: 26.1025,
+      latitude: 44.4268,
     },
   ];
 }

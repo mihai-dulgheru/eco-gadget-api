@@ -5,8 +5,8 @@ export default async function () {
     {
       date: formatDate(new Date(), 'yyyy-MM-dd'),
       location: {
-        latitude: 44.4268,
         longitude: 26.1025,
+        latitude: 44.4268,
         name: 'Strada Principală, București',
       },
       picture: {

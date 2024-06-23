@@ -1,4 +1,3 @@
-import { getDistance } from 'geolib';
 import { isEmpty } from 'lodash';
 import OpenAI from 'openai';
 import {
@@ -7,6 +6,10 @@ import {
   RecyclingLocation,
   User,
 } from '../models';
+
+const EARTH_S_RADIUS_IN_METERS = 6_378_100;
+const RECOMMENDATION_RADIUS_METERS = EARTH_S_RADIUS_IN_METERS / 100_000; // 63.781 meters
+const RECYCLING_CENTER_RADIUS_METERS = EARTH_S_RADIUS_IN_METERS / 1_000; // 6.3781 kilometers
 
 const openai = new OpenAI();
 
@@ -76,11 +79,27 @@ async function getAppliances(req, res) {
   }
 }
 
+// Function to extract JSON from the chat response
+function extractJSON(response) {
+  // Use a regular expression to find the JSON block
+  const jsonMatch = response.match(/\{([\s\S]*?)\}/);
+  if (jsonMatch && jsonMatch[1]) {
+    try {
+      // Add curly braces to the JSON string
+      const jsonString = `{${jsonMatch[1].trim()}}`;
+      return JSON.parse(jsonString.trim());
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+    }
+  }
+  return null;
+}
+
 async function getRecommendations(req, res) {
   try {
-    const { coordinates, distance = 50 } = req.body;
+    const { coordinates } = req.body; // Coordinates in [longitude, latitude] format
 
-    // Validate input
+    // Validate input coordinates
     if (
       !coordinates ||
       coordinates.length !== 2 ||
@@ -88,45 +107,14 @@ async function getRecommendations(req, res) {
     ) {
       return res.status(400).json({ message: 'Invalid coordinates' });
     }
-    if (typeof distance !== 'number' || distance <= 0) {
-      return res.status(400).json({ message: 'Invalid distance' });
-    }
 
     // Fetch user's appliances
     const user = await User.findById(req.user._id)
       .populate('appliances')
       .lean();
-    const appliances = user.appliances;
+    const { aiSettings, appliances } = user;
 
-    // Check if user has any appliances
-    if (isEmpty(appliances)) {
-      return res.status(200).json({ message: 'No appliances found' });
-    }
-
-    // Check if recommendations already exist
-    const applianceData = appliances.map((appliance) => ({
-      id: appliance._id,
-      lastUpdated: appliance.updatedAt,
-    }));
-    const existingStats = await RecommendationStats.findOne({
-      userId: req.user._id,
-      appliances: { $all: applianceData },
-      coordinates,
-      distance,
-    });
-
-    if (existingStats) {
-      res.status(200).json({
-        statistics: {
-          totalEnergyUsage: existingStats.energyUsage,
-          totalCO2Emissions: existingStats.CO2Emissions,
-        },
-        recommendations: existingStats.filteredRecommendations,
-      });
-      return;
-    }
-
-    // Calculate energy and environmental impact
+    // Calculate total energy usage and CO2 emissions
     const totalEnergyUsage = appliances.reduce(
       (total, appliance) => total + appliance.energyUsage,
       0
@@ -136,28 +124,100 @@ async function getRecommendations(req, res) {
       0
     );
 
-    // Convert distance from km to radians for MongoDB query
-    const distanceInMeters = distance * 1000; // distance in meters
+    // Check if AI notifications are disabled
+    if (!aiSettings.notificationsEnabled) {
+      return res.status(200).json({
+        aiNotificationsEnabled: false,
+        recommendations: [],
+        recyclingDonationSwap: null,
+        statistics: { totalCO2Emissions, totalEnergyUsage },
+      });
+    }
 
-    // Find recycling centers within the specified distance
-    const recyclingCenters = await RecyclingLocation.find({
-      location: {
-        $geoWithin: {
-          $centerSphere: [
-            [coordinates[1], coordinates[0]],
-            distanceInMeters / 6378100,
-          ],
+    // Check if user has any appliances
+    if (isEmpty(appliances)) {
+      return res.status(200).json({
+        aiNotificationsEnabled: true,
+        recommendations: [],
+        recyclingDonationSwap: null,
+        statistics: { totalCO2Emissions, totalEnergyUsage },
+      });
+    }
+
+    const applianceData = appliances.map((appliance) => ({
+      id: appliance._id,
+      lastUpdated: appliance.updatedAt,
+    }));
+
+    // Check if recommendations already exist within a specified radius
+    const existingStats = await RecommendationStats.aggregate([
+      {
+        $geoNear: {
+          near: { type: 'Point', coordinates: coordinates },
+          distanceField: 'distance',
+          maxDistance: RECOMMENDATION_RADIUS_METERS,
+          spherical: true,
+          distanceMultiplier: 1, // Convert to meters
         },
       },
-    });
+      { $match: { userId: req.user._id, appliances: { $all: applianceData } } },
+      { $sort: { distance: 1 } },
+      {
+        $lookup: {
+          from: 'recyclinglocations',
+          localField: 'recyclingDonationSwap.recyclingCenter',
+          foreignField: '_id',
+          as: 'recyclingCenterDetails',
+        },
+      },
+      {
+        $lookup: {
+          from: 'appliances',
+          localField: 'recyclingDonationSwap.appliance',
+          foreignField: '_id',
+          as: 'applianceDetails',
+        },
+      },
+      {
+        $addFields: {
+          'recyclingDonationSwap.recyclingCenter': {
+            $arrayElemAt: ['$recyclingCenterDetails', 0],
+          },
+          'recyclingDonationSwap.appliance': {
+            $arrayElemAt: ['$applianceDetails', 0],
+          },
+        },
+      },
+      { $project: { recyclingCenterDetails: 0, applianceDetails: 0 } },
+    ]);
 
-    const recyclingCenterDistances = recyclingCenters.map((center) => ({
-      ...center.toObject(),
-      distance: getDistance(coordinates, [
-        center.location.coordinates[1],
-        center.location.coordinates[0],
-      ]),
-    }));
+    // If existing recommendations are found, return the closest one
+    if (existingStats && existingStats.length > 0) {
+      const bestMatch = existingStats[0];
+      return res.status(200).json({
+        aiNotificationsEnabled: true,
+        recommendations: bestMatch.filteredRecommendations,
+        recyclingDonationSwap: bestMatch.recyclingDonationSwap,
+        statistics: {
+          totalCO2Emissions: bestMatch.CO2Emissions,
+          totalEnergyUsage: bestMatch.energyUsage,
+        },
+      });
+    }
+
+    // Find recycling centers within the specified radius
+    const recyclingCenters = await RecyclingLocation.aggregate([
+      {
+        $geoNear: {
+          near: { type: 'Point', coordinates: coordinates },
+          distanceField: 'distance',
+          maxDistance: RECYCLING_CENTER_RADIUS_METERS,
+          spherical: true,
+          distanceMultiplier: 1, // Convert to meters
+        },
+      },
+      { $sort: { distance: 1 } },
+    ]);
 
     // Generate detailed prompt for OpenAI
     const prompt = `Utilizatorul deține următoarele electrocasnice:
@@ -165,6 +225,7 @@ ${appliances
   .map(
     (appliance) => `
   - ${appliance.name}
+    ID: ${appliance._id}
     Descriere: ${appliance.description}
     An de producție: ${appliance.productionYear}
     Consum de energie: ${appliance.energyUsage} kWh/an
@@ -178,11 +239,12 @@ ${appliances
   .join('\n')}
 Consum total de energie: ${totalEnergyUsage} kWh/an
 Emisii totale de CO2: ${totalCO2Emissions} kg/an
-Centre de reciclare la o distanță de ${distance} km:
-${recyclingCenterDistances
+Centre de reciclare la o distanță de ${RECYCLING_CENTER_RADIUS_METERS} metri:
+${recyclingCenters
   .map(
     (center) => `
   - ${center.name}
+    ID: ${center._id}
     Adresă: ${center.address}
     Telefon: ${center.phone}
     Descriere: ${center.description}
@@ -201,7 +263,17 @@ ${recyclingCenterDistances
   )
   .join('\n')}
 
-Te rog să furnizezi recomandări pentru îmbunătățirea eficienței energetice a utilizatorului la persoana a doua singular. Asigură-te că fiecare propoziție se termină cu un semn de punctuație.`;
+Te rog să furnizezi recomandări pentru îmbunătățirea eficienței energetice la persoana a doua singular. Recomandările de reciclare, donații sau schimburi trebuie să fie sub formă de JSON pe prima linie a răspunsului, urmate de celelalte recomandări pentru eficiența energetică. Asigură-te că fiecare propoziție se termină cu un semn de punctuație.
+JSON-ul trebuie să aibă următoarea structură:
+\`\`\`json
+{
+  type: "<donation/recycling/swap>",
+  recyclingCenter: "<ID_recycling_center>",
+  appliance: "<ID_appliance>",
+  recommendation: "<Recommendation>"
+}
+\`\`\`
+`;
 
     // Make request to OpenAI
     const completion = await openai.chat.completions.create({
@@ -214,102 +286,117 @@ Te rog să furnizezi recomandări pentru îmbunătățirea eficienței energetic
       max_tokens: 256, // Maximum number of tokens to generate
     });
 
+    // Extract recommendations from OpenAI response
     const recommendations = completion.choices[0].message.content.trim();
 
-    // Filter out any incomplete sentences
-    const filteredRecommendations = recommendations
-      .split('\n')
-      .map((sentence) => {
-        return sentence
-          .replace(/^\s*\d+(\.\d+)*\s*[.-]?\s*/, '')
-          .replace(/^\s*[-•]\s*/, '')
-          .replace(/\s*[-•]\s*$/, '')
-          .replace(/\s*\d+(\.\d+)*\s*$/, '')
-          .trim();
-      })
-      .filter((sentence) => sentence.match(/[\w\d\s]+[.!?]$/));
-
-    // Store statistics and recommendations
+    // Prepare data for RecommendationStats
     const recommendationStatsData = {
       userId: req.user._id,
       energyUsage: totalEnergyUsage,
       CO2Emissions: totalCO2Emissions,
       recommendations,
-      coordinates,
-      distance,
-      recyclingCenters: recyclingCenters.map((center) => center._id),
-      recyclingCenterDistances: recyclingCenterDistances.map((center) => ({
+      location: { type: 'Point', coordinates },
+      recyclingCenters: recyclingCenters.map((center) => ({
         id: center._id,
         distance: center.distance,
       })),
       prompt,
       completion: JSON.stringify(completion),
-      filteredRecommendations,
-      energyEfficiencyRating: calculateEnergyEfficiencyRating(totalEnergyUsage), // Function to calculate energy efficiency rating
-      CO2EmissionsRating: calculateCO2EmissionsRating(totalCO2Emissions), // Function to calculate CO2 emissions rating
+      energyEfficiencyRating: calculateEnergyEfficiencyRating(totalEnergyUsage),
+      CO2EmissionsRating: calculateCO2EmissionsRating(totalCO2Emissions),
       appliances: appliances.map((appliance) => ({
         id: appliance._id,
         lastUpdated: appliance.updatedAt,
       })),
     };
 
+    // Extract JSON for recycling/donation/swap from recommendations
+    const recyclingDonationSwap = extractJSON(recommendations);
+
+    if (recyclingDonationSwap) {
+      const {
+        type,
+        recyclingCenter: recyclingCenterId,
+        appliance: applianceId,
+        recommendation,
+      } = recyclingDonationSwap;
+
+      // Find the recycling center and appliance by their IDs
+      const recyclingCenter =
+        await RecyclingLocation.findById(recyclingCenterId).lean();
+      const appliance = await Appliance.findById(applianceId).lean();
+
+      // If both are found, add detailed info to recyclingDonationSwap and update recommendationStatsData
+      if (recyclingCenter && appliance) {
+        recyclingDonationSwap.recyclingCenter = recyclingCenter;
+        recyclingDonationSwap.appliance = appliance;
+        recommendationStatsData.recyclingDonationSwap = {
+          type,
+          recyclingCenter: recyclingCenter._id,
+          appliance: appliance._id,
+          recommendation,
+        };
+      }
+    }
+
+    // Filter out any incomplete sentences from recommendations
+    const filteredRecommendations = recommendations
+      .split('\n')
+      .map(
+        (sentence) =>
+          sentence
+            .replace(/^\s*\d+(\.\d+)*\s*[.-]?\s*/, '') // Remove leading numbers and punctuation
+            .replace(/^\s*[-•]\s*/, '') // Remove leading bullet points
+            .replace(/\s*[-•]\s*$/, '') // Remove trailing bullet points
+            .replace(/\s*\d+(\.\d+)*\s*$/, '') // Remove trailing numbers
+            .trim() // Trim whitespace
+      )
+      .filter((sentence) => sentence.match(/[\w\d\s]+[.!?]$/)); // Keep sentences ending with punctuation
+
+    // Add filtered recommendations to recommendationStatsData
+    recommendationStatsData.filteredRecommendations = filteredRecommendations;
+
+    // Create a new RecommendationStats document and save it
     const recommendationStats = new RecommendationStats(
       recommendationStatsData
     );
     await recommendationStats.save();
 
+    // Send response to client
     res.status(200).json({
-      statistics: {
-        totalEnergyUsage,
-        totalCO2Emissions,
-      },
+      aiNotificationsEnabled: true,
       recommendations: filteredRecommendations,
+      recyclingDonationSwap,
+      statistics: { totalCO2Emissions, totalEnergyUsage },
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching recommendations', error });
   }
 }
 
+// Function to calculate energy efficiency rating
 function calculateEnergyEfficiencyRating(totalEnergyUsage) {
-  if (totalEnergyUsage < 100) {
-    return 'A+++';
-  } else if (totalEnergyUsage < 150) {
-    return 'A++';
-  } else if (totalEnergyUsage < 200) {
-    return 'A+';
-  } else if (totalEnergyUsage < 250) {
-    return 'A';
-  } else if (totalEnergyUsage < 300) {
-    return 'B';
-  } else if (totalEnergyUsage < 400) {
-    return 'C';
-  } else if (totalEnergyUsage < 500) {
-    return 'D';
-  } else if (totalEnergyUsage < 600) {
-    return 'E';
-  } else if (totalEnergyUsage < 700) {
-    return 'F';
-  } else {
-    return 'G';
-  }
+  if (totalEnergyUsage < 100) return 'A+++';
+  else if (totalEnergyUsage < 150) return 'A++';
+  else if (totalEnergyUsage < 200) return 'A+';
+  else if (totalEnergyUsage < 250) return 'A';
+  else if (totalEnergyUsage < 300) return 'B';
+  else if (totalEnergyUsage < 400) return 'C';
+  else if (totalEnergyUsage < 500) return 'D';
+  else if (totalEnergyUsage < 600) return 'E';
+  else if (totalEnergyUsage < 700) return 'F';
+  else return 'G';
 }
 
+// Function to calculate CO2 emissions rating
 function calculateCO2EmissionsRating(totalCO2Emissions) {
-  if (totalCO2Emissions < 1000) {
-    return 'A';
-  } else if (totalCO2Emissions < 2000) {
-    return 'B';
-  } else if (totalCO2Emissions < 3000) {
-    return 'C';
-  } else if (totalCO2Emissions < 4000) {
-    return 'D';
-  } else if (totalCO2Emissions < 5000) {
-    return 'E';
-  } else if (totalCO2Emissions < 6000) {
-    return 'F';
-  } else {
-    return 'G';
-  }
+  if (totalCO2Emissions < 1000) return 'A';
+  else if (totalCO2Emissions < 2000) return 'B';
+  else if (totalCO2Emissions < 3000) return 'C';
+  else if (totalCO2Emissions < 4000) return 'D';
+  else if (totalCO2Emissions < 5000) return 'E';
+  else if (totalCO2Emissions < 6000) return 'F';
+  else return 'G';
 }
 
 // Update an existing appliance
