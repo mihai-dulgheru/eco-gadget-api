@@ -42,7 +42,34 @@ async function getRecyclingLocations(_req, res) {
   }
 }
 
+// Get recycling locations by name
+async function searchRecyclingLocations(req, res) {
+  try {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(200).json([]);
+    }
+    const locations = await RecyclingLocation.find({
+      name: { $regex: query, $options: 'i' },
+    })
+      .select('-schedule._id')
+      .lean();
+    // Convert GeoJSON to latitude and longitude
+    const result = locations.map((location) => ({
+      ...location,
+      longitude: location.location.coordinates[0],
+      latitude: location.location.coordinates[1],
+    }));
+    res.status(200).json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error searching recycling locations', error });
+  }
+}
+
 export default {
   getRecyclingLocationById,
   getRecyclingLocations,
+  searchRecyclingLocations,
 };

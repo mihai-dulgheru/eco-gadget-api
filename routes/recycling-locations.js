@@ -9,6 +9,10 @@ router.get(
   asyncWrapper(recyclingLocationsController.getRecyclingLocations)
 );
 router.get(
+  '/search',
+  asyncWrapper(recyclingLocationsController.searchRecyclingLocations)
+);
+router.get(
   '/:id',
   asyncWrapper(recyclingLocationsController.getRecyclingLocationById)
 );

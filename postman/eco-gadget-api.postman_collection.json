@@ -393,7 +393,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"date\": \"{{$randomDateFuture}}\",\r\n    \"location\": {\r\n        \"latitude\": {{$randomLatitude}},\r\n        \"longitude\": {{$randomLongitude}},\r\n        \"name\": \"{{$randomStreetAddress}}\"\r\n    },\r\n    \"picture\": {\r\n        \"alt\": \"{{$randomWords}}\",\r\n        \"url\": \"{{$randomImageUrl}}\"\r\n    },\r\n    \"sections\": [\r\n        {\r\n            \"content\": \"{{$randomPhrase}}\",\r\n            \"heading\": \"{{$randomWords}}\"\r\n        },\r\n        {\r\n            \"images\": [\r\n                {\r\n                    \"alt\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomImageUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"video\": {\r\n                \"title\": \"{{$randomWords}}\",\r\n                \"url\": \"https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4\"\r\n            }\r\n        },\r\n        {\r\n            \"links\": [\r\n                {\r\n                    \"title\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"contact\": {\r\n                \"address\": \"{{$randomStreetAddress}}\",\r\n                \"email\": \"{{$randomExampleEmail}}\",\r\n                \"phone\": \"{{$randomPhoneNumberExt}}\"\r\n            }\r\n        },\r\n        {\r\n            \"social\": {\r\n                \"facebook\": \"https://www.facebook.com\",\r\n                \"instagram\": \"https://www.instagram.com\",\r\n                \"twitter\": \"https://www.twitter.com\",\r\n                \"youtube\": \"https://www.youtube.com\"\r\n            }\r\n        },\r\n        {\r\n            \"faqs\": [\r\n                {\r\n                    \"answer\": \"{{$randomPhrase}}\",\r\n                    \"question\": \"{{$randomWords}}\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"subtitle\": \"{{$randomWords}}\",\r\n    \"tags\": [\r\n        \"recycling\",\r\n        \"environment\",\r\n        \"sustainability\"\r\n    ],\r\n    \"title\": \"{{$randomWords}}\"\r\n}",
+							"raw": "{\r\n    \"date\": \"{{$randomDateFuture}}\",\r\n    \"location\": {\r\n        \"longitude\": {{$randomLongitude}},\r\n        \"latitude\": {{$randomLatitude}},\r\n        \"name\": \"{{$randomStreetAddress}}\"\r\n    },\r\n    \"picture\": {\r\n        \"alt\": \"{{$randomWords}}\",\r\n        \"url\": \"{{$randomImageUrl}}\"\r\n    },\r\n    \"sections\": [\r\n        {\r\n            \"content\": \"{{$randomPhrase}}\",\r\n            \"heading\": \"{{$randomWords}}\"\r\n        },\r\n        {\r\n            \"images\": [\r\n                {\r\n                    \"alt\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomImageUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"video\": {\r\n                \"title\": \"{{$randomWords}}\",\r\n                \"url\": \"https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4\"\r\n            }\r\n        },\r\n        {\r\n            \"links\": [\r\n                {\r\n                    \"title\": \"{{$randomWords}}\",\r\n                    \"url\": \"{{$randomUrl}}\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"contact\": {\r\n                \"address\": \"{{$randomStreetAddress}}\",\r\n                \"email\": \"{{$randomExampleEmail}}\",\r\n                \"phone\": \"{{$randomPhoneNumberExt}}\"\r\n            }\r\n        },\r\n        {\r\n            \"social\": {\r\n                \"facebook\": \"https://www.facebook.com\",\r\n                \"instagram\": \"https://www.instagram.com\",\r\n                \"twitter\": \"https://www.twitter.com\",\r\n                \"youtube\": \"https://www.youtube.com\"\r\n            }\r\n        },\r\n        {\r\n            \"faqs\": [\r\n                {\r\n                    \"answer\": \"{{$randomPhrase}}\",\r\n                    \"question\": \"{{$randomWords}}\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"subtitle\": \"{{$randomWords}}\",\r\n    \"tags\": [\r\n        \"recycling\",\r\n        \"environment\",\r\n        \"sustainability\"\r\n    ],\r\n    \"title\": \"{{$randomWords}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -541,6 +541,42 @@
 							"path": [
 								"recycling-locations",
 								"{{recycling_location_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Recycling Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recycling-locations/search?query=Milatex",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recycling-locations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Milatex"
+								}
 							]
 						}
 					},
@@ -984,13 +1020,13 @@
 									"type": "text"
 								},
 								{
-									"key": "latitude",
-									"value": "{{$randomLatitude}}",
+									"key": "longitude",
+									"value": "{{$randomLongitude}}",
 									"type": "text"
 								},
 								{
-									"key": "longitude",
-									"value": "{{$randomLongitude}}",
+									"key": "latitude",
+									"value": "{{$randomLatitude}}",
 									"type": "text"
 								}
 							]
@@ -1140,6 +1176,10 @@
 		},
 		{
 			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "recycling_location_id",
 			"value": ""
 		}
 	]
