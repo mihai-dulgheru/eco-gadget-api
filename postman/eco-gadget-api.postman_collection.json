@@ -107,6 +107,87 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/accounts/forgot-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"accounts",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Reset Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"806176\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/accounts/verify-reset-code",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"accounts",
+								"verify-reset-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"806176\",\r\n    \"password\": \"Parola123!\",\r\n    \"confirmPassword\": \"Parola123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/accounts/reset-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"accounts",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

@@ -25,6 +25,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(helmet());
 
+app.get('/', (_req, res) => {
+  res.send('Welcome to the Eco Gadget API');
+});
+
 app.use('/accounts', accountsRouter);
 app.use('/appliances', applianceRoutes);
 app.use('/messages', messagesRouter);

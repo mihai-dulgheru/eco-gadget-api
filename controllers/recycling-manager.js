@@ -3,6 +3,8 @@ import { startOfMonth, subMonths } from 'date-fns';
 import { Message, RecyclingLocation, User } from '../models';
 import { deleteImageFromS3, uploadImageToS3 } from '../utils';
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 async function addRecyclingLocation(req, res) {
   try {
     const imageUrl = await uploadImageToS3(req.file);
@@ -188,7 +190,7 @@ async function respondToMessage(req, res) {
       return res.status(404).json({ message: 'Message not found' });
     }
 
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // TODO: Style all emails
     const msg = {
       to: message.email,
       from: process.env.SENDGRID_EMAIL,
