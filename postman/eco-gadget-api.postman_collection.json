@@ -142,7 +142,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"806176\"\r\n}",
+							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"243515\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -169,7 +169,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"806176\",\r\n    \"password\": \"Parola123!\",\r\n    \"confirmPassword\": \"Parola123!\"\r\n}",
+							"raw": "{\r\n    \"email\": \"dulgherumihai19@stud.ase.ro\",\r\n    \"code\": \"243515\",\r\n    \"password\": \"Parola123!\",\r\n    \"confirmPassword\": \"Parola123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
