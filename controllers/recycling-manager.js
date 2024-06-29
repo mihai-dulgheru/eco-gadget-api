@@ -96,6 +96,11 @@ async function getRecyclingLocations(_req, res) {
     const locations = await RecyclingLocation.find()
       .select('-schedule._id')
       .lean();
+    // Add longitude and latitude properties to each location
+    locations.forEach((location) => {
+      location.longitude = location.location.coordinates[0];
+      location.latitude = location.location.coordinates[1];
+    });
     res.status(200).json(locations);
   } catch (error) {
     res
