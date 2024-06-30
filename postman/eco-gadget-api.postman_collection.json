@@ -47,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user1@example.com\",\r\n    \"password\": \"Parola123!\"\r\n}",
+							"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"Parola123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,6 +184,705 @@
 							"path": [
 								"accounts",
 								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"user_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/users/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"user_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"Parola123!\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"email\": \"{{$randomExampleEmail}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"Parola123!\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/users/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"user_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/users/{{user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Managers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_manager_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-managers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Manager By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-managers/{{recycling_manager_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-managers",
+								"{{recycling_manager_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Recycling Manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_manager_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"Parola123!\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/recycling-managers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recycling Manager",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"email\": \"{{$randomExampleEmail}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"Parola123!\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/recycling-managers/{{recycling_manager_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-managers",
+								"{{recycling_manager_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recycling Manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"recycling_manager_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-managers/{{recycling_manager_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-managers",
+								"{{recycling_manager_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Infos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_info_id\", jsonData[0]._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recycling Info By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-info",
+								"{{recycling_info_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Recycling Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"recycling_info_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "location.longitude",
+									"value": "26.1025",
+									"type": "text"
+								},
+								{
+									"key": "location.latitude",
+									"value": "44.4268",
+									"type": "text"
+								},
+								{
+									"key": "location.name",
+									"value": "Strada Principală, București",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/mihai/Downloads/rrb.jpg"
+								},
+								{
+									"key": "sections[0].content",
+									"value": "Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi. Este o alternativă la eliminarea convențională a deșeurilor, care poate economisi materiale și poate reduce emisiile de gaze cu efect de seră.",
+									"type": "text"
+								},
+								{
+									"key": "sections[0].heading",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[1].images[0].alt",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[1].images[0].url",
+									"value": "https://www.epa.gov/system/files/styles/medium/private/images/2023-10/recycle.jpg?itok=PuKbSHlC",
+									"type": "text"
+								},
+								{
+									"key": "sections[2].video.title",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[2].video.url",
+									"value": "https://videos.pexels.com/video-files/3196599/3196599-hd_1280_720_25fps.mp4",
+									"type": "text"
+								},
+								{
+									"key": "sections[3].links[0].title",
+									"value": "Ghid de reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[3].links[0].url",
+									"value": "https://www.epa.gov/recycle",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.address",
+									"value": "Strada Principală, Nr. 123, București",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.email",
+									"value": "reciclare@example.com",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.phone",
+									"value": "+40314123456",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.facebook",
+									"value": "https://www.facebook.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.instagram",
+									"value": "https://www.instagram.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.twitter",
+									"value": "https://www.twitter.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.youtube",
+									"value": "https://www.youtube.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[6].faqs[0].question",
+									"value": "Ce este reciclarea?",
+									"type": "text"
+								},
+								{
+									"key": "sections[6].faqs[0].answer",
+									"value": "Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi.",
+									"type": "text"
+								},
+								{
+									"key": "subtitle",
+									"value": "Aflați cum să reciclați",
+									"type": "text"
+								},
+								{
+									"key": "tags[0]",
+									"value": "reciclare",
+									"type": "text"
+								},
+								{
+									"key": "tags[1]",
+									"value": "mediu",
+									"type": "text"
+								},
+								{
+									"key": "tags[2]",
+									"value": "sustenabilitate",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Informații despre reciclare",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/admin/recycling-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recycling Info",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "location.longitude",
+									"value": "26.1025",
+									"type": "text"
+								},
+								{
+									"key": "location.latitude",
+									"value": "44.4268",
+									"type": "text"
+								},
+								{
+									"key": "location.name",
+									"value": "Strada Principală, București",
+									"type": "text"
+								},
+								{
+									"key": "sections[0].content",
+									"value": "Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi. Este o alternativă la eliminarea convențională a deșeurilor, care poate economisi materiale și poate reduce emisiile de gaze cu efect de seră.",
+									"type": "text"
+								},
+								{
+									"key": "sections[0].heading",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[1].images[0].alt",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[1].images[0].url",
+									"value": "https://www.epa.gov/system/files/styles/medium/private/images/2023-10/recycle.jpg?itok=PuKbSHlC",
+									"type": "text"
+								},
+								{
+									"key": "sections[2].video.title",
+									"value": "Bazele reciclării",
+									"type": "text"
+								},
+								{
+									"key": "sections[2].video.url",
+									"value": "https://videos.pexels.com/video-files/3196599/3196599-hd_1280_720_25fps.mp4",
+									"type": "text"
+								},
+								{
+									"key": "sections[3].links[0].title",
+									"value": "Ghid de reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[3].links[0].url",
+									"value": "https://www.epa.gov/recycle",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.address",
+									"value": "Strada Principală, Nr. 123, București",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.email",
+									"value": "reciclare@example.com",
+									"type": "text"
+								},
+								{
+									"key": "sections[4].contact.phone",
+									"value": "+40314123456",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.facebook",
+									"value": "https://www.facebook.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.instagram",
+									"value": "https://www.instagram.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.twitter",
+									"value": "https://www.twitter.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[5].social.youtube",
+									"value": "https://www.youtube.com/reciclare",
+									"type": "text"
+								},
+								{
+									"key": "sections[6].faqs[0].question",
+									"value": "Ce este reciclarea?",
+									"type": "text"
+								},
+								{
+									"key": "sections[6].faqs[0].answer",
+									"value": "Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi.",
+									"type": "text"
+								},
+								{
+									"key": "subtitle",
+									"value": "Aflați cum să reciclați",
+									"type": "text"
+								},
+								{
+									"key": "tags[0]",
+									"value": "reciclare",
+									"type": "text"
+								},
+								{
+									"key": "tags[1]",
+									"value": "mediu",
+									"type": "text"
+								},
+								{
+									"key": "tags[2]",
+									"value": "sustenabilitate",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Informații despre reciclare",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/admin/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-info",
+								"{{recycling_info_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recycling Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"user_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/admin/recycling-info/{{recycling_info_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"recycling-info",
+								"{{recycling_info_id}}"
 							]
 						}
 					},
@@ -384,6 +1083,180 @@
 							"path": [
 								"appliances",
 								"recommendations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get Messages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"message_id\", jsonData._id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"locationId\": \"{{recycling_location_id}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"message_id\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/messages/{{message_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"messages",
+								"{{message_id}}"
 							]
 						}
 					},
@@ -666,263 +1539,7 @@
 			]
 		},
 		{
-			"name": "Users",
-			"item": [
-				{
-					"name": "Update User",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "password",
-									"value": "Password123!",
-									"type": "text"
-								},
-								{
-									"key": "firstName",
-									"value": "{{$randomFirstName}}",
-									"type": "text"
-								},
-								{
-									"key": "lastName",
-									"value": "{{$randomLastName}}",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "{{$randomPhoneNumber}}",
-									"type": "text"
-								},
-								{
-									"key": "profilePicture",
-									"type": "file",
-									"src": [],
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{url}}/users",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.collectionVariables.unset(\"token\");"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/users",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Messages",
-			"item": [
-				{
-					"name": "Get Messages",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/messages",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"messages"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Message By Id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"message_id\", jsonData[0]?._id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/messages/{{message_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"messages",
-								"{{message_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Message",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"message_id\", jsonData._id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"locationId\": \"{{recycling_location_id}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/messages",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"messages"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Message",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"message\": \"{{$randomPhrase}}\",\r\n    \"name\": \"{{$randomFullName}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/messages/{{message_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"messages",
-								"{{message_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Message",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.collectionVariables.unset(\"message_id\");"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/messages/{{message_id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"messages",
-								"{{message_id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Recycling Managers",
+			"name": "Recycling Manager",
 			"item": [
 				{
 					"name": "Get Statistics",
@@ -1215,6 +1832,88 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "Password123!",
+									"type": "text"
+								},
+								{
+									"key": "firstName",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "{{$randomLastName}}",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "profilePicture",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"token\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -1261,6 +1960,10 @@
 		},
 		{
 			"key": "recycling_location_id",
+			"value": ""
+		},
+		{
+			"key": "recycling_info_id",
 			"value": ""
 		}
 	]
