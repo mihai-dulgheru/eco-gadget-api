@@ -36,6 +36,17 @@ async function getUserById(req, res) {
 
 async function addUser(req, res) {
   try {
+    const requiredFields = ['email', 'firstName', 'lastName', 'password'];
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+    if (missingFields.length) {
+      return res
+        .status(400)
+        .json({ message: `Missing required fields: ${missingFields}` });
+    }
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email is already in use' });
+    }
     const newUser = new User(req.body);
     await newUser.save();
     res.status(201).json(newUser);
@@ -153,6 +164,17 @@ async function getRecyclingManagerById(req, res) {
 
 async function addRecyclingManager(req, res) {
   try {
+    const requiredFields = ['email', 'firstName', 'lastName', 'password'];
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+    if (missingFields.length) {
+      return res
+        .status(400)
+        .json({ message: `Missing required fields: ${missingFields}` });
+    }
+    const existingManager = await User.findOne({ email: req.body.email });
+    if (existingManager) {
+      return res.status(400).json({ message: 'Email is already in use' });
+    }
     const newManager = new User({ ...req.body, role: 'recycling_manager' });
     await newManager.save();
     res.status(201).json(newManager);
