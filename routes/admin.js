@@ -50,13 +50,13 @@ router.get(
 );
 router.post(
   '/recycling-info',
-  upload.single('image'),
+  upload.single('picture'),
   convertFormDataToJson,
   asyncWrapper(adminController.addRecyclingInfo)
 );
 router.put(
   '/recycling-info/:id',
-  upload.single('image'),
+  upload.single('picture'),
   convertFormDataToJson,
   asyncWrapper(adminController.updateRecyclingInfo)
 );

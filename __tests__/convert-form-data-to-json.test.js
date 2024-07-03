@@ -4,8 +4,10 @@ describe('convertFormDataToJson', () => {
   test('converts simple FormData to JSON', async () => {
     const req = {
       body: {
-        name: 'John',
-        age: '30',
+        formData: JSON.stringify({
+          name: 'John',
+          age: 30,
+        }),
       },
     };
 
@@ -20,26 +22,28 @@ describe('convertFormDataToJson', () => {
   test('converts nested FormData to JSON', async () => {
     const req = {
       body: {
-        'user[name]': 'John',
-        'user[age]': '30',
+        formData: JSON.stringify({
+          user: {
+            name: 'John',
+            age: 30,
+          },
+        }),
       },
     };
 
     await convertFormDataToJson(req, {}, () => {});
 
     expect(req.body).toEqual({
-      user: {
-        name: 'John',
-        age: 30,
-      },
+      user: { name: 'John', age: 30 },
     });
   });
 
   test('converts array FormData to JSON', async () => {
     const req = {
       body: {
-        'tags[0]': 'tag1',
-        'tags[1]': 'tag2',
+        formData: JSON.stringify({
+          tags: ['tag1', 'tag2'],
+        }),
       },
     };
 

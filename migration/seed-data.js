@@ -37,14 +37,6 @@ async function updateRecyclingLocationWithMessagesId() {
   await RecyclingLocation.updateMany({}, { $set: { messages: [messageId] } });
 }
 
-async function updateRecyclingInfoAdminFields() {
-  const admin = await User.findOne({ role: 'admin' }).lean();
-  await RecyclingInfo.updateMany(
-    {},
-    { $set: { createdBy: admin._id, updatedBy: admin._id } }
-  );
-}
-
 async function seedDatabase() {
   await connect();
   await dropCollections();
@@ -52,10 +44,6 @@ async function seedDatabase() {
   try {
     console.log('Inserting appliance data...');
     await Appliance.insertMany(await appliances());
-    console.log('✔️');
-
-    console.log('Inserting recycling data...');
-    await RecyclingInfo.insertMany(await recyclingInfo());
     console.log('✔️');
 
     console.log('Inserting recycling location data...');
@@ -82,8 +70,8 @@ async function seedDatabase() {
     await User.insertMany(await users());
     console.log('✔️');
 
-    console.log('Setting createdBy and updatedBy fields for recycling info...');
-    await updateRecyclingInfoAdminFields();
+    console.log('Inserting recycling data...');
+    await RecyclingInfo.insertMany(await recyclingInfo());
     console.log('✔️');
   } catch (error) {
     console.error('Error seeding data:', error.message);

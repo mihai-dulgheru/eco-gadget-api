@@ -14,7 +14,7 @@ async function convertFormDataToJson(req, _res, next) {
       set(result, key, value);
     });
 
-    req.body = result;
+    req.body = result.formData;
     next();
   } catch (error) {
     next(error);

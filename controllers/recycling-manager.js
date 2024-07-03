@@ -229,8 +229,8 @@ async function updateRecyclingLocation(req, res) {
 
     if (req.file) {
       // Delete the old image if it exists and a new file is uploaded
-      if (location.image) {
-        await deleteImageFromS3(location.image);
+      if (imageUrl) {
+        await deleteImageFromS3(imageUrl);
       }
       imageUrl = await uploadImageToS3(req.file);
     }

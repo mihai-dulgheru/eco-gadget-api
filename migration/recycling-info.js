@@ -1,8 +1,12 @@
 import { formatDate } from 'date-fns';
+import { User } from '../models';
 
 export default async function () {
+  const admin = await User.findOne({ role: 'admin' }).select('_id').lean();
+
   return [
     {
+      createdBy: admin._id,
       date: formatDate(new Date(), 'yyyy-MM-dd'),
       location: {
         longitude: 26.1025,
@@ -15,9 +19,11 @@ export default async function () {
       },
       sections: [
         {
+          heading: 'Bazele reciclării',
+        },
+        {
           content:
             'Reciclarea este procesul de transformare a deșeurilor în materiale și obiecte noi. Este o alternativă la eliminarea convențională a deșeurilor, care poate economisi materiale și poate reduce emisiile de gaze cu efect de seră.',
-          heading: 'Bazele reciclării',
         },
         {
           images: [

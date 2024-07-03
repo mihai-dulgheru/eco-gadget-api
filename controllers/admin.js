@@ -255,7 +255,23 @@ async function deleteRecyclingManager(req, res) {
 async function getRecyclingInfos(_req, res) {
   try {
     const recyclingInfos = await RecyclingInfo.find().lean();
-    res.status(200).json(recyclingInfos);
+
+    const updatedInfos = recyclingInfos.map((info) => ({
+      ...info,
+      picture: info.picture?.url,
+      sections: info.sections.map((section) => ({
+        ...section,
+        type: section.heading
+          ? 'heading'
+          : section.content
+            ? 'content'
+            : section.contact
+              ? 'contact'
+              : 'unknown',
+      })),
+    }));
+
+    res.status(200).json(updatedInfos);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching recycling infos', error });
   }
@@ -307,7 +323,7 @@ async function updateRecyclingInfo(req, res) {
       return res.status(404).json({ message: 'Recycling info not found' });
     }
 
-    let imageUrl = recyclingInfo.picture;
+    let imageUrl = recyclingInfo.picture?.url;
 
     const updatedData = {
       ...req.body,
@@ -317,9 +333,10 @@ async function updateRecyclingInfo(req, res) {
 
     if (req.file) {
       // Delete the old image if it exists and a new file is uploaded
-      if (recyclingInfo.picture) {
-        await deleteImageFromS3(recyclingInfo.picture.url);
+      if (imageUrl) {
+        await deleteImageFromS3(imageUrl);
       }
+      imageUrl = await uploadImageToS3(req.file);
       updatedData.picture = { alt: req.file.originalname, url: imageUrl };
     }
 
