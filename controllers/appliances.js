@@ -263,7 +263,7 @@ ${recyclingCenters
   )
   .join('\n')}
 
-Te rog să furnizezi recomandări pentru îmbunătățirea eficienței energetice la persoana a doua singular. Recomandările de reciclare, donații sau schimburi trebuie să fie sub formă de JSON pe prima linie a răspunsului, urmate de celelalte recomandări pentru eficiența energetică. Asigură-te că fiecare propoziție se termină cu un semn de punctuație.
+Te rog să furnizezi recomandări pentru îmbunătățirea eficienței energetice folosind persoana a doua singular. Prima linie a răspunsului trebuie să conțină o recomandare de reciclare, donație sau schimb sub formă de JSON, urmată de recomandări pentru eficiența energetică. Asigură-te că fiecare propoziție se termină cu un semn de punctuație și furnizează o singură recomandare pentru reciclare, donație sau schimb, reprezentând cea mai bună opțiune pentru utilizator.
 JSON-ul trebuie să aibă următoarea structură:
 \`\`\`json
 {
@@ -283,7 +283,8 @@ JSON-ul trebuie să aibă următoarea structură:
       ],
       model: 'gpt-3.5-turbo',
       temperature: 0.7, // Higher temperature means more randomness
-      max_tokens: 256, // Maximum number of tokens to generate
+      // max_tokens: 256, // Maximum number of tokens to generate
+      max_tokens: 512, // Maximum number of tokens to generate
     });
 
     // Extract recommendations from OpenAI response
