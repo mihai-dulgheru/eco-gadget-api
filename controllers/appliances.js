@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import OpenAI from 'openai';
 import {
   Appliance,
@@ -135,7 +134,7 @@ async function getRecommendations(req, res) {
     }
 
     // Check if user has any appliances
-    if (isEmpty(appliances)) {
+    if (appliances.length === 0) {
       return res.status(200).json({
         aiNotificationsEnabled: true,
         recommendations: [],
@@ -160,7 +159,16 @@ async function getRecommendations(req, res) {
           distanceMultiplier: 1, // Convert to meters
         },
       },
-      { $match: { userId: req.user._id, appliances: { $all: applianceData } } },
+      {
+        $match: {
+          userId: req.user._id,
+          'appliances.id': { $all: applianceData.map((a) => a.id) },
+          'appliances.lastUpdated': {
+            $all: applianceData.map((a) => a.lastUpdated),
+          },
+          appliances: { $size: applianceData.length }, // Ensure the count matches
+        },
+      },
       { $sort: { distance: 1 } },
       {
         $lookup: {
