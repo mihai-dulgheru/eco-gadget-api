@@ -54,7 +54,7 @@ export default async function () {
       energyUsage: 150,
       CO2Emissions: 65,
       expectedLifespan: 8,
-      disposalOptions: DISPOSAL_OPTIONS[1],
+      disposalOptions: DISPOSAL_OPTIONS[0],
       efficiencyRating: EFFICIENCY_RATINGS[4],
       materialComposition: {
         metal: 30,
@@ -69,7 +69,7 @@ export default async function () {
       energyUsage: 120,
       CO2Emissions: 50,
       expectedLifespan: 7,
-      disposalOptions: DISPOSAL_OPTIONS[2],
+      disposalOptions: DISPOSAL_OPTIONS[0],
       efficiencyRating: EFFICIENCY_RATINGS[0],
       materialComposition: {
         metal: 20,
