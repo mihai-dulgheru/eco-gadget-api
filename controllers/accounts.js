@@ -29,7 +29,64 @@ async function forgotPassword(req, res) {
       from: process.env.SENDGRID_EMAIL,
       subject: 'Resetare parolă',
       text: `Codul tău de resetare a parolei este: ${resetCode}`,
-      html: `<p>Codul tău de resetare a parolei este: <strong>${resetCode}</strong></p>`,
+      html: `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resetare parolă</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      box-sizing: border-box;
+    "
+  >
+    <div
+      style="
+        background-color: #f2f2f2;
+        padding: 20px;
+        max-width: 640px;
+        margin: 0 auto;
+      "
+    >
+      <div style="background-color: #ffffff; border-radius: 8px; padding: 20px">
+        <img
+          src="https://eco-gadget.s3.eu-north-1.amazonaws.com/assets/icon.png"
+          alt="EcoGadget Logo"
+          style="display: block; margin: 0 auto 20px auto; max-width: 100px"
+        />
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Codul tău de resetare a parolei este:
+        </p>
+        <p
+          style="
+            color: #030303;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: bold;
+          "
+        >
+          ${resetCode}
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Dacă nu ai solicitat resetarea parolei, te rugăm să ignori acest
+          email.
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Cu respect,
+        </p>
+        <p style="color: #030303; font-size: 16px; font-weight: bold">
+          Echipa EcoGadget
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+`,
     };
     await sgMail.send(msg);
 
@@ -89,7 +146,54 @@ async function resetPassword(req, res) {
       from: process.env.SENDGRID_EMAIL,
       subject: 'Confirmare resetare parolă',
       text: 'Parola ta a fost resetată cu succes.',
-      html: '<p>Parola ta a fost resetată cu succes.</p>',
+      html: `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmare resetare parolă</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      box-sizing: border-box;
+    "
+  >
+    <div
+      style="
+        background-color: #f2f2f2;
+        padding: 20px;
+        max-width: 640px;
+        margin: 0 auto;
+      "
+    >
+      <div style="background-color: #ffffff; border-radius: 8px; padding: 20px">
+        <img
+          src="https://eco-gadget.s3.eu-north-1.amazonaws.com/assets/icon.png"
+          alt="EcoGadget Logo"
+          style="display: block; margin: 0 auto 20px auto; max-width: 100px"
+        />
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Parola ta a fost resetată cu succes.
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Dacă nu ai solicitat resetarea parolei, te rugăm să contactezi echipa
+          de suport.
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Cu respect,
+        </p>
+        <p style="color: #030303; font-size: 16px; font-weight: bold">
+          Echipa EcoGadget
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+`,
     };
     await sgMail.send(msg);
 

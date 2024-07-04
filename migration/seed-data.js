@@ -32,9 +32,18 @@ async function dropCollections() {
 }
 
 async function updateRecyclingLocationWithMessagesId() {
-  const message = await Message.findOne().select('_id').lean();
-  const messageId = message._id;
-  await RecyclingLocation.updateMany({}, { $set: { messages: [messageId] } });
+  const messages = await Message.find().lean();
+
+  if (messages.length === 0) return;
+
+  const bulkOps = messages.map((message) => ({
+    updateOne: {
+      filter: { _id: message.locationId },
+      update: { $push: { messages: message._id } },
+    },
+  }));
+
+  await RecyclingLocation.bulkWrite(bulkOps);
 }
 
 async function seedDatabase() {

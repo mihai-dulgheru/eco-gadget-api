@@ -37,7 +37,6 @@ app.use('/messages', messagesRouter);
 app.use('/recycling-info', recyclingInfoRouter);
 app.use('/recycling-locations', recyclingLocationsRouter);
 app.use('/recycling-manager', recyclingManagerRouter);
-// TODO: Remove this route to /user
 app.use('/users', usersRouter);
 
 app.use(errorHandler);

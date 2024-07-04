@@ -635,7 +635,7 @@
 								},
 								{
 									"key": "sections[4].contact.phone",
-									"value": "+40314123456",
+									"value": "0314123456",
 									"type": "text"
 								},
 								{
@@ -783,7 +783,7 @@
 								},
 								{
 									"key": "sections[4].contact.phone",
-									"value": "+40314123456",
+									"value": "0314123456",
 									"type": "text"
 								},
 								{

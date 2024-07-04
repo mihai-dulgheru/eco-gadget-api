@@ -195,18 +195,64 @@ async function respondToMessage(req, res) {
       return res.status(404).json({ message: 'Message not found' });
     }
 
-    // TODO: Style all emails
     const msg = {
       to: message.email,
       from: process.env.SENDGRID_EMAIL,
       subject: 'Răspuns la mesajul dvs.',
       text: req.body.response,
-      html: `<p>Stimate/Stimată ${message.name},</p>
-             <p>Vă mulțumim pentru mesajul dvs. și pentru interesul acordat.</p>
-             <p>${req.body.response}</p>
-             <p>Dacă aveți alte întrebări sau nelămuriri, nu ezitați să ne contactați.</p>
-             <p>Cu respect,</p>
-             <p>Echipa EcoGadget</p>`,
+      html: `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Răspuns la mesajul dvs.</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      box-sizing: border-box;
+    "
+  >
+    <div
+      style="
+        background-color: #f2f2f2;
+        padding: 20px;
+        max-width: 640px;
+        margin: 0 auto;
+      "
+    >
+      <div style="background-color: #ffffff; border-radius: 8px; padding: 20px">
+        <img
+          src="https://eco-gadget.s3.eu-north-1.amazonaws.com/assets/icon.png"
+          alt="EcoGadget Logo"
+          style="display: block; margin: 0 auto 20px auto; max-width: 100px"
+        />
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Stimate/Stimată ${message.name},
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Vă mulțumim pentru mesajul dvs. și pentru interesul acordat.
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          ${req.body.response}
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Dacă aveți alte întrebări sau nelămuriri, nu ezitați să ne contactați.
+        </p>
+        <p style="color: #030303; font-size: 16px; margin-bottom: 20px">
+          Cu respect,
+        </p>
+        <p style="color: #030303; font-size: 16px; font-weight: bold">
+          Echipa EcoGadget
+        </p>
+      </div>
+    </di>
+  </body>
+</html>
+`,
     };
     await sgMail.send(msg);
 
